@@ -8,8 +8,10 @@
 	<groupId>com</groupId>
 	<artifactId>zjgj-cas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>zjgj-cas</name>
 	<url>http://maven.apache.org</url>
+	<description>单点登陆</description>
 
 	<parent>
 		<groupId>com</groupId>
@@ -18,18 +20,27 @@
 	</parent>
 
 	<dependencies>
-		<!-- <dependency>
-			<groupid>org.apereo.cas</groupid>
-			<artifactid>cas-server-webapp-tomcat-5.2.1.war</artifactid>
-			<version>${cas.version}</version>
-			<type>war</type>
-			<scope>system</scope>
-			<optional>true</optional>
-			<systempath>zjgj-cas/src/main/webapp/WEB-INF/lib/cas-server-webapp-tomcat-5.2.1.war</systempath>
-		</dependency> -->
-
+		<dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-webapp-tomcat</artifactId>
+            <version>${cas.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
 	</dependencies>
-
+	
+	<dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apereo.cas</groupId>
+                <artifactId>cas-server-support-bom</artifactId>
+                <version>${cas.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+	
 	<build>
 		<resources>
 			<resource>
@@ -47,6 +58,49 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>com.rimerosolutions.maven.plugins</groupId>
+                <artifactId>wrapper-maven-plugin</artifactId>
+                <version>0.0.5</version>
+                <configuration>
+                    <verifyDownload>true</verifyDownload>
+                    <checksumAlgorithm>MD5</checksumAlgorithm>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${springboot.version}</version>
+                <configuration>
+                    <mainClass>org.springframework.boot.loader.WarLauncher</mainClass>
+                    <addResources>true</addResources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <warName>cas</warName>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <recompressZippedFiles>false</recompressZippedFiles>
+                    <archive>
+                        <compress>false</compress>
+                        <manifestFile>${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp-tomcat/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                    <overlays>
+                        <overlay>
+                            <groupId>org.apereo.cas</groupId>
+                            <artifactId>cas-server-webapp-tomcat</artifactId>
+                        </overlay>
+                    </overlays>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+            </plugin>
 		</plugins>
 	</build>
 </project>

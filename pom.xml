@@ -17,6 +17,8 @@
   </modules>
 
 	<properties>
+		<!-- springboot -->
+		<springboot.version>2.0.4</springboot.version>
 		<!-- CAS -->
 		<cas.version>5.2.1</cas.version>
 		<!-- Log libs -->
