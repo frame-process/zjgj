@@ -18,7 +18,15 @@
 	</parent>
 
 	<dependencies>
-
+		<!-- <dependency>
+			<groupid>org.apereo.cas</groupid>
+			<artifactid>cas-server-webapp-tomcat-5.2.1.war</artifactid>
+			<version>${cas.version}</version>
+			<type>war</type>
+			<scope>system</scope>
+			<optional>true</optional>
+			<systempath>zjgj-cas/src/main/webapp/WEB-INF/lib/cas-server-webapp-tomcat-5.2.1.war</systempath>
+		</dependency> -->
 
 	</dependencies>
 
