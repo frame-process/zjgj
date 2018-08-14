@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmSmsLogMybatisDao">
+
+	<resultMap id="RM_CrmSmsLog" type="com.zjgj.crm.entity.CrmSmsLog">
+        <result property="smsLogId" column="sms_log_id"/>
+        <result property="smsMobile" column="sms_mobile"/>
+        <result property="smsContent" column="sms_content"/>
+        <result property="smsParm" column="sms_parm"/>
+        <result property="smsResult" column="sms_result"/>
+        <result property="creId" column="cre_id"/>
+        <result property="creName" column="cre_name"/>
+        <result property="creIp" column="cre_ip"/>
+        <result property="creTime" column="cre_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmSmsLog_columns">
+		sms_log_id,sms_mobile,sms_content,sms_parm,sms_result,cre_id,cre_name,cre_ip,cre_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_sms_log (
+        	sms_log_id ,
+        	sms_mobile ,
+        	sms_content ,
+        	sms_parm ,
+        	sms_result ,
+        	cre_id ,
+        	cre_name ,
+        	cre_ip ,
+        	cre_time 
+        ) VALUES (	
+        	#{smsLogId} ,
+        	#{smsMobile} ,
+        	#{smsContent} ,
+        	#{smsParm} ,
+        	#{smsResult} ,
+        	#{creId} ,
+        	#{creName} ,
+        	#{creIp} ,
+        	#{creTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_sms_log 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(smsMobile)">sms_mobile = #{smsMobile} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(smsContent)">sms_content = #{smsContent} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(smsParm)">sms_parm = #{smsParm} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(smsResult)">sms_result = #{smsResult} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creId)">cre_id = #{creId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creName)">cre_name = #{creName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creIp)">cre_ip = #{creIp} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} </if>
+		</set>
+        WHERE 
+	        sms_log_id = #{smsLogId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_sms_log WHERE
+        sms_log_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_sms_log  WHERE
+        sms_log_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmSmsLog">
+		SELECT <include refid="CrmSmsLog_columns" />
+		FROM crm_sms_log WHERE 
+		sms_log_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(sms_log_id) FROM crm_sms_log 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmSmsLog">
+        SELECT <include refid="CrmSmsLog_columns" /> 
+		FROM crm_sms_log 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmSmsLog_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(smsLogId)">
+				AND sms_log_id = #{smsLogId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(smsMobile)">
+				AND sms_mobile = #{smsMobile}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(smsContent)">
+				AND sms_content = #{smsContent}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(smsParm)">
+				AND sms_parm = #{smsParm}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(smsResult)">
+				AND sms_result = #{smsResult}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creId)">
+				AND cre_id = #{creId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creName)">
+				AND cre_name = #{creName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creIp)">
+				AND cre_ip = #{creIp}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(sms_log_id) FROM crm_sms_log 
+		<include refid="CrmSmsLog_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmSmsLog">
+    	SELECT <include refid="CrmSmsLog_columns" />
+	    FROM crm_sms_log 
+		<include refid="CrmSmsLog_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

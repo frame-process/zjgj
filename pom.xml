@@ -14,11 +14,17 @@
 		<module>zjgj-uc</module>
 		<module>zjgj-cas</module>
     	<module>zjgj-project</module>
+    <module>zjgj-generator</module>
   </modules>
 
 	<properties>
+		<mysql.version>8.0.11</mysql.version>
+		<druid.version>1.1.10</druid.version>
+		<pagehelper.version>1.2.5</pagehelper.version>
+		<jackson.verson>2.9.6</jackson.verson>
+		<mybatis.version>1.3.2</mybatis.version>
 		<!-- springboot -->
-		<springboot.version>2.0.4</springboot.version>
+		<springboot.version>2.0.4.RELEASE</springboot.version>
 		<!-- CAS -->
 		<cas.version>5.2.1</cas.version>
 		<!-- Log libs -->

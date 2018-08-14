@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmOptLogMybatisDao">
+
+	<resultMap id="RM_CrmOptLog" type="com.zjgj.crm.entity.CrmOptLog">
+        <result property="optId" column="opt_id"/>
+        <result property="optUser" column="opt_user"/>
+        <result property="optName" column="opt_name"/>
+        <result property="optTime" column="opt_time"/>
+        <result property="optServ" column="opt_serv"/>
+        <result property="optParm" column="opt_parm"/>
+        <result property="optResult" column="opt_result"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmOptLog_columns">
+		opt_id,opt_user,opt_name,opt_time,opt_serv,opt_parm,opt_result
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_opt_log (
+        	opt_id ,
+        	opt_user ,
+        	opt_name ,
+        	opt_time ,
+        	opt_serv ,
+        	opt_parm ,
+        	opt_result 
+        ) VALUES (	
+        	#{optId} ,
+        	#{optUser} ,
+        	#{optName} ,
+        	#{optTime} ,
+        	#{optServ} ,
+        	#{optParm} ,
+        	#{optResult} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_opt_log 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optUser)">opt_user = #{optUser} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optName)">opt_name = #{optName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optTime)">opt_time = #{optTime} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optServ)">opt_serv = #{optServ} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optParm)">opt_parm = #{optParm} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optResult)">opt_result = #{optResult} </if>
+		</set>
+        WHERE 
+	        opt_id = #{optId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_opt_log WHERE
+        opt_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_opt_log  WHERE
+        opt_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmOptLog">
+		SELECT <include refid="CrmOptLog_columns" />
+		FROM crm_opt_log WHERE 
+		opt_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(opt_id) FROM crm_opt_log 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmOptLog">
+        SELECT <include refid="CrmOptLog_columns" /> 
+		FROM crm_opt_log 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmOptLog_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optId)">
+				AND opt_id = #{optId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optUser)">
+				AND opt_user = #{optUser}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optName)">
+				AND opt_name = #{optName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optTimeBegin)">
+				AND opt_time >= #{optTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optTimeEnd)">
+				AND opt_time &lt;= #{optTimeEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optServ)">
+				AND opt_serv = #{optServ}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optParm)">
+				AND opt_parm = #{optParm}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(optResult)">
+				AND opt_result = #{optResult}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(opt_id) FROM crm_opt_log 
+		<include refid="CrmOptLog_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmOptLog">
+    	SELECT <include refid="CrmOptLog_columns" />
+	    FROM crm_opt_log 
+		<include refid="CrmOptLog_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

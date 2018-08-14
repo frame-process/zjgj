@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmUploadFileMybatisDao">
+
+	<resultMap id="RM_CrmUploadFile" type="com.zjgj.crm.entity.CrmUploadFile">
+        <result property="fileId" column="file_id"/>
+        <result property="fileType" column="file_type"/>
+        <result property="filePkid" column="file_pkid"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="fileName" column="file_name"/>
+        <result property="fileUrl" column="file_url"/>
+        <result property="fileStg" column="file_stg"/>
+        <result property="fileIp" column="file_ip"/>
+        <result property="fileExt" column="file_ext"/>
+        <result property="visiCount" column="visi_count"/>
+        <result property="fileDel" column="file_del"/>
+        <result property="creTime" column="cre_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmUploadFile_columns">
+		file_id,file_type,file_pkid,file_size,file_name,file_url,file_stg,file_ip,file_ext,visi_count,file_del,cre_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_upload_file (
+        	file_id ,
+        	file_type ,
+        	file_pkid ,
+        	file_size ,
+        	file_name ,
+        	file_url ,
+        	file_stg ,
+        	file_ip ,
+        	file_ext ,
+        	visi_count ,
+        	file_del ,
+        	cre_time 
+        ) VALUES (	
+        	#{fileId} ,
+        	#{fileType} ,
+        	#{filePkid} ,
+        	#{fileSize} ,
+        	#{fileName} ,
+        	#{fileUrl} ,
+        	#{fileStg} ,
+        	#{fileIp} ,
+        	#{fileExt} ,
+        	#{visiCount} ,
+        	#{fileDel} ,
+        	#{creTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_upload_file 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileType)">file_type = #{fileType} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(filePkid)">file_pkid = #{filePkid} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileSize)">file_size = #{fileSize} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileName)">file_name = #{fileName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileUrl)">file_url = #{fileUrl} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileStg)">file_stg = #{fileStg} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileIp)">file_ip = #{fileIp} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileExt)">file_ext = #{fileExt} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(visiCount)">visi_count = #{visiCount} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileDel)">file_del = #{fileDel} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} </if>
+		</set>
+        WHERE 
+	        file_id = #{fileId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_upload_file WHERE
+        file_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_upload_file  WHERE
+        file_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmUploadFile">
+		SELECT <include refid="CrmUploadFile_columns" />
+		FROM crm_upload_file WHERE 
+		file_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(file_id) FROM crm_upload_file 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmUploadFile">
+        SELECT <include refid="CrmUploadFile_columns" /> 
+		FROM crm_upload_file 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmUploadFile_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileId)">
+				AND file_id = #{fileId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileType)">
+				AND file_type = #{fileType}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(filePkid)">
+				AND file_pkid = #{filePkid}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileSize)">
+				AND file_size = #{fileSize}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileName)">
+				AND file_name = #{fileName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileUrl)">
+				AND file_url = #{fileUrl}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileStg)">
+				AND file_stg = #{fileStg}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileIp)">
+				AND file_ip = #{fileIp}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileExt)">
+				AND file_ext = #{fileExt}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(visiCount)">
+				AND visi_count = #{visiCount}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(fileDel)">
+				AND file_del = #{fileDel}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(file_id) FROM crm_upload_file 
+		<include refid="CrmUploadFile_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmUploadFile">
+    	SELECT <include refid="CrmUploadFile_columns" />
+	    FROM crm_upload_file 
+		<include refid="CrmUploadFile_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

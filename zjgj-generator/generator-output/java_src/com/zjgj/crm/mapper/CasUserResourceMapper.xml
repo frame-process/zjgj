@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CasUserResourceMybatisDao">
+
+	<resultMap id="RM_CasUserResource" type="com.zjgj.crm.entity.CasUserResource">
+        <result property="userId" column="user_id"/>
+        <result property="resId" column="res_id"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CasUserResource_columns">
+		user_id,res_id
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cas_user_resource (
+        	user_id ,
+        	res_id 
+        ) VALUES (	
+        	#{userId} ,
+        	#{resId} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE cas_user_resource 
+		<set>
+		</set>
+        WHERE 
+	        user_id = #{userId} ,
+	        res_id = #{resId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM cas_user_resource WHERE
+        user_id = #{id} ,
+        res_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  cas_user_resource  WHERE
+        user_idres_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CasUserResource">
+		SELECT <include refid="CasUserResource_columns" />
+		FROM cas_user_resource WHERE 
+		user_id = #{id} ,
+		res_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(user_idres_id) FROM cas_user_resource 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CasUserResource">
+        SELECT <include refid="CasUserResource_columns" /> 
+		FROM cas_user_resource 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CasUserResource_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(userId)">
+				AND user_id = #{userId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resId)">
+				AND res_id = #{resId}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(user_idres_id) FROM cas_user_resource 
+		<include refid="CasUserResource_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CasUserResource">
+    	SELECT <include refid="CasUserResource_columns" />
+	    FROM cas_user_resource 
+		<include refid="CasUserResource_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

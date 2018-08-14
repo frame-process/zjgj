@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmCarMybatisDao">
+
+	<resultMap id="RM_CrmCar" type="com.zjgj.crm.entity.CrmCar">
+        <result property="carId" column="car_id"/>
+        <result property="cusId" column="cus_id"/>
+        <result property="carIns" column="car_ins"/>
+        <result property="carNo" column="car_no"/>
+        <result property="carModel" column="car_model"/>
+        <result property="carRegDate" column="car_reg_date"/>
+        <result property="carBrand" column="car_brand"/>
+        <result property="carFrame" column="car_frame"/>
+        <result property="carEngine" column="car_engine"/>
+        <result property="creTime" column="cre_time"/>
+        <result property="uptTime" column="upt_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmCar_columns">
+		car_id,cus_id,car_ins,car_no,car_model,car_reg_date,car_brand,car_frame,car_engine,cre_time,upt_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_car (
+        	car_id ,
+        	cus_id ,
+        	car_ins ,
+        	car_no ,
+        	car_model ,
+        	car_reg_date ,
+        	car_brand ,
+        	car_frame ,
+        	car_engine ,
+        	cre_time ,
+        	upt_time 
+        ) VALUES (	
+        	#{carId} ,
+        	#{cusId} ,
+        	#{carIns} ,
+        	#{carNo} ,
+        	#{carModel} ,
+        	#{carRegDate} ,
+        	#{carBrand} ,
+        	#{carFrame} ,
+        	#{carEngine} ,
+        	#{creTime} ,
+        	#{uptTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_car 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusId)">cus_id = #{cusId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carIns)">car_ins = #{carIns} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carNo)">car_no = #{carNo} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carModel)">car_model = #{carModel} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carRegDate)">car_reg_date = #{carRegDate} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carBrand)">car_brand = #{carBrand} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carFrame)">car_frame = #{carFrame} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carEngine)">car_engine = #{carEngine} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(uptTime)">upt_time = #{uptTime} </if>
+		</set>
+        WHERE 
+	        car_id = #{carId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_car WHERE
+        car_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_car  WHERE
+        car_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmCar">
+		SELECT <include refid="CrmCar_columns" />
+		FROM crm_car WHERE 
+		car_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(car_id) FROM crm_car 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmCar">
+        SELECT <include refid="CrmCar_columns" /> 
+		FROM crm_car 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmCar_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carId)">
+				AND car_id = #{carId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusId)">
+				AND cus_id = #{cusId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carIns)">
+				AND car_ins = #{carIns}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carNo)">
+				AND car_no = #{carNo}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carModel)">
+				AND car_model = #{carModel}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carRegDateBegin)">
+				AND car_reg_date >= #{carRegDateBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carRegDateEnd)">
+				AND car_reg_date &lt;= #{carRegDateEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carBrand)">
+				AND car_brand = #{carBrand}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carFrame)">
+				AND car_frame = #{carFrame}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carEngine)">
+				AND car_engine = #{carEngine}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(uptTimeBegin)">
+				AND upt_time >= #{uptTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(uptTimeEnd)">
+				AND upt_time &lt;= #{uptTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(car_id) FROM crm_car 
+		<include refid="CrmCar_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmCar">
+    	SELECT <include refid="CrmCar_columns" />
+	    FROM crm_car 
+		<include refid="CrmCar_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

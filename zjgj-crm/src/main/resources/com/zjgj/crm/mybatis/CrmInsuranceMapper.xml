@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmInsuranceMybatisDao">
+
+	<resultMap id="RM_CrmInsurance" type="com.zjgj.crm.entity.CrmInsurance">
+        <result property="insId" column="ins_id"/>
+        <result property="insName" column="ins_name"/>
+        <result property="insDsc" column="ins_dsc"/>
+        <result property="insDel" column="ins_del"/>
+        <result property="insStat" column="ins_stat"/>
+        <result property="creTime" column="cre_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmInsurance_columns">
+		ins_id,ins_name,ins_dsc,ins_del,ins_stat,cre_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_insurance (
+        	ins_id ,
+        	ins_name ,
+        	ins_dsc ,
+        	ins_del ,
+        	ins_stat ,
+        	cre_time 
+        ) VALUES (	
+        	#{insId} ,
+        	#{insName} ,
+        	#{insDsc} ,
+        	#{insDel} ,
+        	#{insStat} ,
+        	#{creTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_insurance 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insName)">ins_name = #{insName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insDsc)">ins_dsc = #{insDsc} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insDel)">ins_del = #{insDel} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insStat)">ins_stat = #{insStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} </if>
+		</set>
+        WHERE 
+	        ins_id = #{insId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_insurance WHERE
+        ins_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_insurance  WHERE
+        ins_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmInsurance">
+		SELECT <include refid="CrmInsurance_columns" />
+		FROM crm_insurance WHERE 
+		ins_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(ins_id) FROM crm_insurance 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmInsurance">
+        SELECT <include refid="CrmInsurance_columns" /> 
+		FROM crm_insurance 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmInsurance_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insId)">
+				AND ins_id = #{insId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insName)">
+				AND ins_name = #{insName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insDsc)">
+				AND ins_dsc = #{insDsc}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insDel)">
+				AND ins_del = #{insDel}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insStat)">
+				AND ins_stat = #{insStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(ins_id) FROM crm_insurance 
+		<include refid="CrmInsurance_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmInsurance">
+    	SELECT <include refid="CrmInsurance_columns" />
+	    FROM crm_insurance 
+		<include refid="CrmInsurance_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

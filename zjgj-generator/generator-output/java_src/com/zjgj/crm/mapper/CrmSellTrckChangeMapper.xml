@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmSellTrckChangeMybatisDao">
+
+	<resultMap id="RM_CrmSellTrckChange" type="com.zjgj.crm.entity.CrmSellTrckChange">
+        <result property="sellChgId" column="sell_chg_id"/>
+        <result property="sellTrckId" column="sell_trck_id"/>
+        <result property="carId" column="car_id"/>
+        <result property="chgServ" column="chg_serv"/>
+        <result property="chgBef" column="chg_bef"/>
+        <result property="chgAft" column="chg_aft"/>
+        <result property="chgTime" column="chg_time"/>
+        <result property="chgUser" column="chg_user"/>
+        <result property="chgName" column="chg_name"/>
+        <result property="chgIp" column="chg_ip"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmSellTrckChange_columns">
+		sell_chg_id,sell_trck_id,car_id,chg_serv,chg_bef,chg_aft,chg_time,chg_user,chg_name,chg_ip
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_sell_trck_change (
+        	sell_chg_id ,
+        	sell_trck_id ,
+        	car_id ,
+        	chg_serv ,
+        	chg_bef ,
+        	chg_aft ,
+        	chg_time ,
+        	chg_user ,
+        	chg_name ,
+        	chg_ip 
+        ) VALUES (	
+        	#{sellChgId} ,
+        	#{sellTrckId} ,
+        	#{carId} ,
+        	#{chgServ} ,
+        	#{chgBef} ,
+        	#{chgAft} ,
+        	#{chgTime} ,
+        	#{chgUser} ,
+        	#{chgName} ,
+        	#{chgIp} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_sell_trck_change 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sellTrckId)">sell_trck_id = #{sellTrckId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carId)">car_id = #{carId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgServ)">chg_serv = #{chgServ} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgBef)">chg_bef = #{chgBef} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgAft)">chg_aft = #{chgAft} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgTime)">chg_time = #{chgTime} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgUser)">chg_user = #{chgUser} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgName)">chg_name = #{chgName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgIp)">chg_ip = #{chgIp} </if>
+		</set>
+        WHERE 
+	        sell_chg_id = #{sellChgId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_sell_trck_change WHERE
+        sell_chg_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_sell_trck_change  WHERE
+        sell_chg_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmSellTrckChange">
+		SELECT <include refid="CrmSellTrckChange_columns" />
+		FROM crm_sell_trck_change WHERE 
+		sell_chg_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(sell_chg_id) FROM crm_sell_trck_change 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmSellTrckChange">
+        SELECT <include refid="CrmSellTrckChange_columns" /> 
+		FROM crm_sell_trck_change 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmSellTrckChange_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sellChgId)">
+				AND sell_chg_id = #{sellChgId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sellTrckId)">
+				AND sell_trck_id = #{sellTrckId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carId)">
+				AND car_id = #{carId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgServ)">
+				AND chg_serv = #{chgServ}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgBef)">
+				AND chg_bef = #{chgBef}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgAft)">
+				AND chg_aft = #{chgAft}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgTimeBegin)">
+				AND chg_time >= #{chgTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgTimeEnd)">
+				AND chg_time &lt;= #{chgTimeEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgUser)">
+				AND chg_user = #{chgUser}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgName)">
+				AND chg_name = #{chgName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(chgIp)">
+				AND chg_ip = #{chgIp}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(sell_chg_id) FROM crm_sell_trck_change 
+		<include refid="CrmSellTrckChange_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmSellTrckChange">
+    	SELECT <include refid="CrmSellTrckChange_columns" />
+	    FROM crm_sell_trck_change 
+		<include refid="CrmSellTrckChange_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

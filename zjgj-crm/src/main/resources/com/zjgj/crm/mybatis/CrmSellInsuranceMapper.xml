@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmSellInsuranceMybatisDao">
+
+	<resultMap id="RM_CrmSellInsurance" type="com.zjgj.crm.entity.CrmSellInsurance">
+        <result property="sellPolicyId" column="sell_policy_id"/>
+        <result property="insId" column="ins_id"/>
+        <result property="selVal" column="sel_val"/>
+        <result property="txtVal" column="txt_val"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmSellInsurance_columns">
+		sell_policy_id,ins_id,sel_val,txt_val
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_sell_insurance (
+        	sell_policy_id ,
+        	ins_id ,
+        	sel_val ,
+        	txt_val 
+        ) VALUES (	
+        	#{sellPolicyId} ,
+        	#{insId} ,
+        	#{selVal} ,
+        	#{txtVal} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_sell_insurance 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(selVal)">sel_val = #{selVal} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(txtVal)">txt_val = #{txtVal} </if>
+		</set>
+        WHERE 
+	        sell_policy_id = #{sellPolicyId} ,
+	        ins_id = #{insId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_sell_insurance WHERE
+        sell_policy_id = #{id} ,
+        ins_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_sell_insurance  WHERE
+        sell_policy_idins_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmSellInsurance">
+		SELECT <include refid="CrmSellInsurance_columns" />
+		FROM crm_sell_insurance WHERE 
+		sell_policy_id = #{id} ,
+		ins_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(sell_policy_idins_id) FROM crm_sell_insurance 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmSellInsurance">
+        SELECT <include refid="CrmSellInsurance_columns" /> 
+		FROM crm_sell_insurance 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmSellInsurance_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sellPolicyId)">
+				AND sell_policy_id = #{sellPolicyId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insId)">
+				AND ins_id = #{insId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(selVal)">
+				AND sel_val = #{selVal}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(txtVal)">
+				AND txt_val = #{txtVal}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(sell_policy_idins_id) FROM crm_sell_insurance 
+		<include refid="CrmSellInsurance_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmSellInsurance">
+    	SELECT <include refid="CrmSellInsurance_columns" />
+	    FROM crm_sell_insurance 
+		<include refid="CrmSellInsurance_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

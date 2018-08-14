@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmSellTrckMybatisDao">
+
+	<resultMap id="RM_CrmSellTrck" type="com.zjgj.crm.entity.CrmSellTrck">
+        <result property="sellTrckId" column="sell_trck_id"/>
+        <result property="sellCarId" column="sell_car_id"/>
+        <result property="carId" column="car_id"/>
+        <result property="insCom" column="ins_com"/>
+        <result property="insPpl" column="ins_ppl"/>
+        <result property="insComPre" column="ins_com_pre"/>
+        <result property="trckUser" column="trck_user"/>
+        <result property="trckName" column="trck_name"/>
+        <result property="dataType" column="data_type"/>
+        <result property="dataStat" column="data_stat"/>
+        <result property="trckStat" column="trck_stat"/>
+        <result property="trckNote" column="trck_note"/>
+        <result property="dataSrc" column="data_src"/>
+        <result property="cusGrade" column="cus_grade"/>
+        <result property="reseTime" column="rese_time"/>
+        <result property="sellRese" column="sell_rese"/>
+        <result property="calcStat" column="calc_stat"/>
+        <result property="calcTime" column="calc_time"/>
+        <result property="creTime" column="cre_time"/>
+        <result property="uptTime" column="upt_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmSellTrck_columns">
+		sell_trck_id,sell_car_id,car_id,ins_com,ins_ppl,ins_com_pre,trck_user,trck_name,data_type,data_stat,trck_stat,trck_note,data_src,cus_grade,rese_time,sell_rese,calc_stat,calc_time,cre_time,upt_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_sell_trck (
+        	sell_trck_id ,
+        	sell_car_id ,
+        	car_id ,
+        	ins_com ,
+        	ins_ppl ,
+        	ins_com_pre ,
+        	trck_user ,
+        	trck_name ,
+        	data_type ,
+        	data_stat ,
+        	trck_stat ,
+        	trck_note ,
+        	data_src ,
+        	cus_grade ,
+        	rese_time ,
+        	sell_rese ,
+        	calc_stat ,
+        	calc_time ,
+        	cre_time ,
+        	upt_time 
+        ) VALUES (	
+        	#{sellTrckId} ,
+        	#{sellCarId} ,
+        	#{carId} ,
+        	#{insCom} ,
+        	#{insPpl} ,
+        	#{insComPre} ,
+        	#{trckUser} ,
+        	#{trckName} ,
+        	#{dataType} ,
+        	#{dataStat} ,
+        	#{trckStat} ,
+        	#{trckNote} ,
+        	#{dataSrc} ,
+        	#{cusGrade} ,
+        	#{reseTime} ,
+        	#{sellRese} ,
+        	#{calcStat} ,
+        	#{calcTime} ,
+        	#{creTime} ,
+        	#{uptTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_sell_trck 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sellCarId)">sell_car_id = #{sellCarId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carId)">car_id = #{carId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insCom)">ins_com = #{insCom} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insPpl)">ins_ppl = #{insPpl} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insComPre)">ins_com_pre = #{insComPre} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckUser)">trck_user = #{trckUser} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckName)">trck_name = #{trckName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataType)">data_type = #{dataType} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataStat)">data_stat = #{dataStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckStat)">trck_stat = #{trckStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckNote)">trck_note = #{trckNote} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataSrc)">data_src = #{dataSrc} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusGrade)">cus_grade = #{cusGrade} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(reseTime)">rese_time = #{reseTime} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sellRese)">sell_rese = #{sellRese} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(calcStat)">calc_stat = #{calcStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(calcTime)">calc_time = #{calcTime} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(uptTime)">upt_time = #{uptTime} </if>
+		</set>
+        WHERE 
+	        sell_trck_id = #{sellTrckId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_sell_trck WHERE
+        sell_trck_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_sell_trck  WHERE
+        sell_trck_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmSellTrck">
+		SELECT <include refid="CrmSellTrck_columns" />
+		FROM crm_sell_trck WHERE 
+		sell_trck_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(sell_trck_id) FROM crm_sell_trck 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmSellTrck">
+        SELECT <include refid="CrmSellTrck_columns" /> 
+		FROM crm_sell_trck 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmSellTrck_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sellTrckId)">
+				AND sell_trck_id = #{sellTrckId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sellCarId)">
+				AND sell_car_id = #{sellCarId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carId)">
+				AND car_id = #{carId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insCom)">
+				AND ins_com = #{insCom}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insPpl)">
+				AND ins_ppl = #{insPpl}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insComPre)">
+				AND ins_com_pre = #{insComPre}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckUser)">
+				AND trck_user = #{trckUser}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckName)">
+				AND trck_name = #{trckName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataType)">
+				AND data_type = #{dataType}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataStat)">
+				AND data_stat = #{dataStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckStat)">
+				AND trck_stat = #{trckStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckNote)">
+				AND trck_note = #{trckNote}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataSrc)">
+				AND data_src = #{dataSrc}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusGrade)">
+				AND cus_grade = #{cusGrade}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(reseTimeBegin)">
+				AND rese_time >= #{reseTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(reseTimeEnd)">
+				AND rese_time &lt;= #{reseTimeEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sellRese)">
+				AND sell_rese = #{sellRese}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(calcStat)">
+				AND calc_stat = #{calcStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(calcTimeBegin)">
+				AND calc_time >= #{calcTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(calcTimeEnd)">
+				AND calc_time &lt;= #{calcTimeEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(uptTimeBegin)">
+				AND upt_time >= #{uptTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(uptTimeEnd)">
+				AND upt_time &lt;= #{uptTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(sell_trck_id) FROM crm_sell_trck 
+		<include refid="CrmSellTrck_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmSellTrck">
+    	SELECT <include refid="CrmSellTrck_columns" />
+	    FROM crm_sell_trck 
+		<include refid="CrmSellTrck_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmClaimCarMybatisDao">
+
+	<resultMap id="RM_CrmClaimCar" type="com.zjgj.crm.entity.CrmClaimCar">
+        <result property="claimCarId" column="claim_car_id"/>
+        <result property="carId" column="car_id"/>
+        <result property="distStat" column="dist_stat"/>
+        <result property="dataType" column="data_type"/>
+        <result property="dataSrc" column="data_src"/>
+        <result property="creTime" column="cre_time"/>
+        <result property="uptTime" column="upt_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmClaimCar_columns">
+		claim_car_id,car_id,dist_stat,data_type,data_src,cre_time,upt_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_claim_car (
+        	claim_car_id ,
+        	car_id ,
+        	dist_stat ,
+        	data_type ,
+        	data_src ,
+        	cre_time ,
+        	upt_time 
+        ) VALUES (	
+        	#{claimCarId} ,
+        	#{carId} ,
+        	#{distStat} ,
+        	#{dataType} ,
+        	#{dataSrc} ,
+        	#{creTime} ,
+        	#{uptTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_claim_car 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carId)">car_id = #{carId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(distStat)">dist_stat = #{distStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataType)">data_type = #{dataType} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataSrc)">data_src = #{dataSrc} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(uptTime)">upt_time = #{uptTime} </if>
+		</set>
+        WHERE 
+	        claim_car_id = #{claimCarId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_claim_car WHERE
+        claim_car_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_claim_car  WHERE
+        claim_car_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmClaimCar">
+		SELECT <include refid="CrmClaimCar_columns" />
+		FROM crm_claim_car WHERE 
+		claim_car_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(claim_car_id) FROM crm_claim_car 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmClaimCar">
+        SELECT <include refid="CrmClaimCar_columns" /> 
+		FROM crm_claim_car 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmClaimCar_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(claimCarId)">
+				AND claim_car_id = #{claimCarId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carId)">
+				AND car_id = #{carId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(distStat)">
+				AND dist_stat = #{distStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataType)">
+				AND data_type = #{dataType}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dataSrc)">
+				AND data_src = #{dataSrc}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(uptTimeBegin)">
+				AND upt_time >= #{uptTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(uptTimeEnd)">
+				AND upt_time &lt;= #{uptTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(claim_car_id) FROM crm_claim_car 
+		<include refid="CrmClaimCar_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmClaimCar">
+    	SELECT <include refid="CrmClaimCar_columns" />
+	    FROM crm_claim_car 
+		<include refid="CrmClaimCar_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

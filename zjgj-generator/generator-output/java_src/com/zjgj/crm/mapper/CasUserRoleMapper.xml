@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CasUserRoleMybatisDao">
+
+	<resultMap id="RM_CasUserRole" type="com.zjgj.crm.entity.CasUserRole">
+        <result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CasUserRole_columns">
+		user_id,role_id
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cas_user_role (
+        	user_id ,
+        	role_id 
+        ) VALUES (	
+        	#{userId} ,
+        	#{roleId} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE cas_user_role 
+		<set>
+		</set>
+        WHERE 
+	        user_id = #{userId} ,
+	        role_id = #{roleId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM cas_user_role WHERE
+        user_id = #{id} ,
+        role_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  cas_user_role  WHERE
+        user_idrole_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CasUserRole">
+		SELECT <include refid="CasUserRole_columns" />
+		FROM cas_user_role WHERE 
+		user_id = #{id} ,
+		role_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(user_idrole_id) FROM cas_user_role 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CasUserRole">
+        SELECT <include refid="CasUserRole_columns" /> 
+		FROM cas_user_role 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CasUserRole_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(userId)">
+				AND user_id = #{userId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleId)">
+				AND role_id = #{roleId}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(user_idrole_id) FROM cas_user_role 
+		<include refid="CasUserRole_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CasUserRole">
+    	SELECT <include refid="CasUserRole_columns" />
+	    FROM cas_user_role 
+		<include refid="CasUserRole_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

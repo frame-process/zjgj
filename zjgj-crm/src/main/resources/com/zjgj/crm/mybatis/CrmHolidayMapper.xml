@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmHolidayMybatisDao">
+
+	<resultMap id="RM_CrmHoliday" type="com.zjgj.crm.entity.CrmHoliday">
+        <result property="holId" column="hol_id"/>
+        <result property="holDate" column="hol_date"/>
+        <result property="note" column="note"/>
+        <result property="workDate" column="work_date"/>
+        <result property="holDel" column="hol_del"/>
+        <result property="holStat" column="hol_stat"/>
+        <result property="creUser" column="cre_user"/>
+        <result property="creName" column="cre_name"/>
+        <result property="creIp" column="cre_ip"/>
+        <result property="creTime" column="cre_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmHoliday_columns">
+		hol_id,hol_date,note,work_date,hol_del,hol_stat,cre_user,cre_name,cre_ip,cre_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_holiday (
+        	hol_id ,
+        	hol_date ,
+        	note ,
+        	work_date ,
+        	hol_del ,
+        	hol_stat ,
+        	cre_user ,
+        	cre_name ,
+        	cre_ip ,
+        	cre_time 
+        ) VALUES (	
+        	#{holId} ,
+        	#{holDate} ,
+        	#{note} ,
+        	#{workDate} ,
+        	#{holDel} ,
+        	#{holStat} ,
+        	#{creUser} ,
+        	#{creName} ,
+        	#{creIp} ,
+        	#{creTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_holiday 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(holDate)">hol_date = #{holDate} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(note)">note = #{note} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(workDate)">work_date = #{workDate} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(holDel)">hol_del = #{holDel} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(holStat)">hol_stat = #{holStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creUser)">cre_user = #{creUser} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creName)">cre_name = #{creName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creIp)">cre_ip = #{creIp} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} </if>
+		</set>
+        WHERE 
+	        hol_id = #{holId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_holiday WHERE
+        hol_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_holiday  WHERE
+        hol_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmHoliday">
+		SELECT <include refid="CrmHoliday_columns" />
+		FROM crm_holiday WHERE 
+		hol_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(hol_id) FROM crm_holiday 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmHoliday">
+        SELECT <include refid="CrmHoliday_columns" /> 
+		FROM crm_holiday 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmHoliday_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(holId)">
+				AND hol_id = #{holId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(holDateBegin)">
+				AND hol_date >= #{holDateBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(holDateEnd)">
+				AND hol_date &lt;= #{holDateEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(note)">
+				AND note = #{note}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(workDateBegin)">
+				AND work_date >= #{workDateBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(workDateEnd)">
+				AND work_date &lt;= #{workDateEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(holDel)">
+				AND hol_del = #{holDel}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(holStat)">
+				AND hol_stat = #{holStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creUser)">
+				AND cre_user = #{creUser}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creName)">
+				AND cre_name = #{creName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creIp)">
+				AND cre_ip = #{creIp}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(hol_id) FROM crm_holiday 
+		<include refid="CrmHoliday_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmHoliday">
+    	SELECT <include refid="CrmHoliday_columns" />
+	    FROM crm_holiday 
+		<include refid="CrmHoliday_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

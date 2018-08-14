@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmGiftMybatisDao">
+
+	<resultMap id="RM_CrmGift" type="com.zjgj.crm.entity.CrmGift">
+        <result property="giftId" column="gift_id"/>
+        <result property="giftName" column="gift_name"/>
+        <result property="giftDel" column="gift_del"/>
+        <result property="giftStat" column="gift_stat"/>
+        <result property="creTime" column="cre_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmGift_columns">
+		gift_id,gift_name,gift_del,gift_stat,cre_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_gift (
+        	gift_id ,
+        	gift_name ,
+        	gift_del ,
+        	gift_stat ,
+        	cre_time 
+        ) VALUES (	
+        	#{giftId} ,
+        	#{giftName} ,
+        	#{giftDel} ,
+        	#{giftStat} ,
+        	#{creTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_gift 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftName)">gift_name = #{giftName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftDel)">gift_del = #{giftDel} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftStat)">gift_stat = #{giftStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} </if>
+		</set>
+        WHERE 
+	        gift_id = #{giftId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_gift WHERE
+        gift_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_gift  WHERE
+        gift_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmGift">
+		SELECT <include refid="CrmGift_columns" />
+		FROM crm_gift WHERE 
+		gift_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(gift_id) FROM crm_gift 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmGift">
+        SELECT <include refid="CrmGift_columns" /> 
+		FROM crm_gift 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmGift_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftId)">
+				AND gift_id = #{giftId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftName)">
+				AND gift_name = #{giftName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftDel)">
+				AND gift_del = #{giftDel}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftStat)">
+				AND gift_stat = #{giftStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(gift_id) FROM crm_gift 
+		<include refid="CrmGift_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmGift">
+    	SELECT <include refid="CrmGift_columns" />
+	    FROM crm_gift 
+		<include refid="CrmGift_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmClaimPolicyMybatisDao">
+
+	<resultMap id="RM_CrmClaimPolicy" type="com.zjgj.crm.entity.CrmClaimPolicy">
+        <result property="claimPolicyId" column="claim_policy_id"/>
+        <result property="claimTrckId" column="claim_trck_id"/>
+        <result property="trckUser" column="trck_user"/>
+        <result property="trckName" column="trck_name"/>
+        <result property="carId" column="car_id"/>
+        <result property="stroDate" column="stro_date"/>
+        <result property="busiDate" column="busi_date"/>
+        <result property="policyNote" column="policy_note"/>
+        <result property="policyStat" column="policy_stat"/>
+        <result property="insAmt" column="ins_amt"/>
+        <result property="policyAmt" column="policy_amt"/>
+        <result property="policyRealAmt" column="policy_real_amt"/>
+        <result property="invoice" column="invoice"/>
+        <result property="tmpAddr" column="tmp_addr"/>
+        <result property="payType" column="pay_type"/>
+        <result property="giftGroupId" column="gift_group_id"/>
+        <result property="giftData" column="gift_data"/>
+        <result property="shopId" column="shop_id"/>
+        <result property="creTime" column="cre_time"/>
+        <result property="updTime" column="upd_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmClaimPolicy_columns">
+		claim_policy_id,claim_trck_id,trck_user,trck_name,car_id,stro_date,busi_date,policy_note,policy_stat,ins_amt,policy_amt,policy_real_amt,invoice,tmp_addr,pay_type,gift_group_id,gift_data,shop_id,cre_time,upd_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_claim_policy (
+        	claim_policy_id ,
+        	claim_trck_id ,
+        	trck_user ,
+        	trck_name ,
+        	car_id ,
+        	stro_date ,
+        	busi_date ,
+        	policy_note ,
+        	policy_stat ,
+        	ins_amt ,
+        	policy_amt ,
+        	policy_real_amt ,
+        	invoice ,
+        	tmp_addr ,
+        	pay_type ,
+        	gift_group_id ,
+        	gift_data ,
+        	shop_id ,
+        	cre_time ,
+        	upd_time 
+        ) VALUES (	
+        	#{claimPolicyId} ,
+        	#{claimTrckId} ,
+        	#{trckUser} ,
+        	#{trckName} ,
+        	#{carId} ,
+        	#{stroDate} ,
+        	#{busiDate} ,
+        	#{policyNote} ,
+        	#{policyStat} ,
+        	#{insAmt} ,
+        	#{policyAmt} ,
+        	#{policyRealAmt} ,
+        	#{invoice} ,
+        	#{tmpAddr} ,
+        	#{payType} ,
+        	#{giftGroupId} ,
+        	#{giftData} ,
+        	#{shopId} ,
+        	#{creTime} ,
+        	#{updTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_claim_policy 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(claimTrckId)">claim_trck_id = #{claimTrckId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckUser)">trck_user = #{trckUser} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckName)">trck_name = #{trckName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carId)">car_id = #{carId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(stroDate)">stro_date = #{stroDate} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(busiDate)">busi_date = #{busiDate} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(policyNote)">policy_note = #{policyNote} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(policyStat)">policy_stat = #{policyStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insAmt)">ins_amt = #{insAmt} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(policyAmt)">policy_amt = #{policyAmt} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(policyRealAmt)">policy_real_amt = #{policyRealAmt} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(invoice)">invoice = #{invoice} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(tmpAddr)">tmp_addr = #{tmpAddr} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(payType)">pay_type = #{payType} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftGroupId)">gift_group_id = #{giftGroupId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftData)">gift_data = #{giftData} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(shopId)">shop_id = #{shopId} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(updTime)">upd_time = #{updTime} </if>
+		</set>
+        WHERE 
+	        claim_policy_id = #{claimPolicyId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_claim_policy WHERE
+        claim_policy_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_claim_policy  WHERE
+        claim_policy_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmClaimPolicy">
+		SELECT <include refid="CrmClaimPolicy_columns" />
+		FROM crm_claim_policy WHERE 
+		claim_policy_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(claim_policy_id) FROM crm_claim_policy 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmClaimPolicy">
+        SELECT <include refid="CrmClaimPolicy_columns" /> 
+		FROM crm_claim_policy 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmClaimPolicy_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(claimPolicyId)">
+				AND claim_policy_id = #{claimPolicyId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(claimTrckId)">
+				AND claim_trck_id = #{claimTrckId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckUser)">
+				AND trck_user = #{trckUser}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(trckName)">
+				AND trck_name = #{trckName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(carId)">
+				AND car_id = #{carId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(stroDateBegin)">
+				AND stro_date >= #{stroDateBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(stroDateEnd)">
+				AND stro_date &lt;= #{stroDateEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(busiDateBegin)">
+				AND busi_date >= #{busiDateBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(busiDateEnd)">
+				AND busi_date &lt;= #{busiDateEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(policyNoteBegin)">
+				AND policy_note >= #{policyNoteBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(policyNoteEnd)">
+				AND policy_note &lt;= #{policyNoteEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(policyStat)">
+				AND policy_stat = #{policyStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(insAmt)">
+				AND ins_amt = #{insAmt}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(policyAmt)">
+				AND policy_amt = #{policyAmt}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(policyRealAmt)">
+				AND policy_real_amt = #{policyRealAmt}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(invoice)">
+				AND invoice = #{invoice}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(tmpAddr)">
+				AND tmp_addr = #{tmpAddr}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(payType)">
+				AND pay_type = #{payType}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftGroupId)">
+				AND gift_group_id = #{giftGroupId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(giftData)">
+				AND gift_data = #{giftData}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(shopId)">
+				AND shop_id = #{shopId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(updTimeBegin)">
+				AND upd_time >= #{updTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(updTimeEnd)">
+				AND upd_time &lt;= #{updTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(claim_policy_id) FROM crm_claim_policy 
+		<include refid="CrmClaimPolicy_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmClaimPolicy">
+    	SELECT <include refid="CrmClaimPolicy_columns" />
+	    FROM crm_claim_policy 
+		<include refid="CrmClaimPolicy_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

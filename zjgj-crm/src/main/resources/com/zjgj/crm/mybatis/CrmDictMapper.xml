@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmDictMybatisDao">
+
+	<resultMap id="RM_CrmDict" type="com.zjgj.crm.entity.CrmDict">
+        <result property="dictId" column="dict_id"/>
+        <result property="dictCode" column="dict_code"/>
+        <result property="dictName" column="dict_name"/>
+        <result property="itemCode" column="item_code"/>
+        <result property="itemName" column="item_name"/>
+        <result property="itemSeq" column="item_seq"/>
+        <result property="itemStat" column="item_stat"/>
+        <result property="itemDel" column="item_del"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmDict_columns">
+		dict_id,dict_code,dict_name,item_code,item_name,item_seq,item_stat,item_del
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_dict (
+        	dict_id ,
+        	dict_code ,
+        	dict_name ,
+        	item_code ,
+        	item_name ,
+        	item_seq ,
+        	item_stat ,
+        	item_del 
+        ) VALUES (	
+        	#{dictId} ,
+        	#{dictCode} ,
+        	#{dictName} ,
+        	#{itemCode} ,
+        	#{itemName} ,
+        	#{itemSeq} ,
+        	#{itemStat} ,
+        	#{itemDel} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_dict 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dictCode)">dict_code = #{dictCode} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dictName)">dict_name = #{dictName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemCode)">item_code = #{itemCode} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemName)">item_name = #{itemName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemSeq)">item_seq = #{itemSeq} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemStat)">item_stat = #{itemStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemDel)">item_del = #{itemDel} </if>
+		</set>
+        WHERE 
+	        dict_id = #{dictId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_dict WHERE
+        dict_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_dict  WHERE
+        dict_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmDict">
+		SELECT <include refid="CrmDict_columns" />
+		FROM crm_dict WHERE 
+		dict_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(dict_id) FROM crm_dict 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmDict">
+        SELECT <include refid="CrmDict_columns" /> 
+		FROM crm_dict 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmDict_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dictId)">
+				AND dict_id = #{dictId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dictCode)">
+				AND dict_code = #{dictCode}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(dictName)">
+				AND dict_name = #{dictName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemCode)">
+				AND item_code = #{itemCode}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemName)">
+				AND item_name = #{itemName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemSeq)">
+				AND item_seq = #{itemSeq}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemStat)">
+				AND item_stat = #{itemStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(itemDel)">
+				AND item_del = #{itemDel}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(dict_id) FROM crm_dict 
+		<include refid="CrmDict_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmDict">
+    	SELECT <include refid="CrmDict_columns" />
+	    FROM crm_dict 
+		<include refid="CrmDict_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

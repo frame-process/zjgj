@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmRepairShopMybatisDao">
+
+	<resultMap id="RM_CrmRepairShop" type="com.zjgj.crm.entity.CrmRepairShop">
+        <result property="shopId" column="shop_id"/>
+        <result property="shopName" column="shop_name"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmRepairShop_columns">
+		shop_id,shop_name
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_repair_shop (
+        	shop_id ,
+        	shop_name 
+        ) VALUES (	
+        	#{shopId} ,
+        	#{shopName} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_repair_shop 
+		<set>
+		</set>
+        WHERE 
+	        shop_id = #{shopId} ,
+	        shop_name = #{shopName} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_repair_shop WHERE
+        shop_id = #{id} ,
+        shop_name = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_repair_shop  WHERE
+        shop_idshop_name IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmRepairShop">
+		SELECT <include refid="CrmRepairShop_columns" />
+		FROM crm_repair_shop WHERE 
+		shop_id = #{id} ,
+		shop_name = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(shop_idshop_name) FROM crm_repair_shop 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmRepairShop">
+        SELECT <include refid="CrmRepairShop_columns" /> 
+		FROM crm_repair_shop 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmRepairShop_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(shopId)">
+				AND shop_id = #{shopId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(shopName)">
+				AND shop_name = #{shopName}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(shop_idshop_name) FROM crm_repair_shop 
+		<include refid="CrmRepairShop_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmRepairShop">
+    	SELECT <include refid="CrmRepairShop_columns" />
+	    FROM crm_repair_shop 
+		<include refid="CrmRepairShop_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

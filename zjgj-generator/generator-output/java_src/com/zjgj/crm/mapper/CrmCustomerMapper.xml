@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CrmCustomerMybatisDao">
+
+	<resultMap id="RM_CrmCustomer" type="com.zjgj.crm.entity.CrmCustomer">
+        <result property="cusId" column="cus_id"/>
+        <result property="cusName" column="cus_name"/>
+        <result property="cusMobile" column="cus_mobile"/>
+        <result property="cusPhone" column="cus_phone"/>
+        <result property="cusAddr" column="cus_addr"/>
+        <result property="cusType" column="cus_type"/>
+        <result property="cusGrade" column="cus_grade"/>
+        <result property="creTime" column="cre_time"/>
+        <result property="updTime" column="upd_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CrmCustomer_columns">
+		cus_id,cus_name,cus_mobile,cus_phone,cus_addr,cus_type,cus_grade,cre_time,upd_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crm_customer (
+        	cus_id ,
+        	cus_name ,
+        	cus_mobile ,
+        	cus_phone ,
+        	cus_addr ,
+        	cus_type ,
+        	cus_grade ,
+        	cre_time ,
+        	upd_time 
+        ) VALUES (	
+        	#{cusId} ,
+        	#{cusName} ,
+        	#{cusMobile} ,
+        	#{cusPhone} ,
+        	#{cusAddr} ,
+        	#{cusType} ,
+        	#{cusGrade} ,
+        	#{creTime} ,
+        	#{updTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE crm_customer 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusName)">cus_name = #{cusName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusMobile)">cus_mobile = #{cusMobile} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusPhone)">cus_phone = #{cusPhone} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusAddr)">cus_addr = #{cusAddr} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusType)">cus_type = #{cusType} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusGrade)">cus_grade = #{cusGrade} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(updTime)">upd_time = #{updTime} </if>
+		</set>
+        WHERE 
+	        cus_id = #{cusId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM crm_customer WHERE
+        cus_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  crm_customer  WHERE
+        cus_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CrmCustomer">
+		SELECT <include refid="CrmCustomer_columns" />
+		FROM crm_customer WHERE 
+		cus_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(cus_id) FROM crm_customer 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CrmCustomer">
+        SELECT <include refid="CrmCustomer_columns" /> 
+		FROM crm_customer 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CrmCustomer_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusId)">
+				AND cus_id = #{cusId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusName)">
+				AND cus_name = #{cusName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusMobile)">
+				AND cus_mobile = #{cusMobile}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusPhone)">
+				AND cus_phone = #{cusPhone}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusAddr)">
+				AND cus_addr = #{cusAddr}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusType)">
+				AND cus_type = #{cusType}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(cusGrade)">
+				AND cus_grade = #{cusGrade}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(updTimeBegin)">
+				AND upd_time >= #{updTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(updTimeEnd)">
+				AND upd_time &lt;= #{updTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(cus_id) FROM crm_customer 
+		<include refid="CrmCustomer_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CrmCustomer">
+    	SELECT <include refid="CrmCustomer_columns" />
+	    FROM crm_customer 
+		<include refid="CrmCustomer_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

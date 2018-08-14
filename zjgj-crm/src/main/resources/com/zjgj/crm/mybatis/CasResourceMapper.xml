@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CasResourceMybatisDao">
+
+	<resultMap id="RM_CasResource" type="com.zjgj.crm.entity.CasResource">
+        <result property="resId" column="res_id"/>
+        <result property="resName" column="res_name"/>
+        <result property="resType" column="res_type"/>
+        <result property="resUrl" column="res_url"/>
+        <result property="resDsc" column="res_dsc"/>
+        <result property="resParent" column="res_parent"/>
+        <result property="resIcon" column="res_icon"/>
+        <result property="resSeq" column="res_seq"/>
+        <result property="resDel" column="res_del"/>
+        <result property="resStat" column="res_stat"/>
+        <result property="creTime" column="cre_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CasResource_columns">
+		res_id,res_name,res_type,res_url,res_dsc,res_parent,res_icon,res_seq,res_del,res_stat,cre_time
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cas_resource (
+        	res_id ,
+        	res_name ,
+        	res_type ,
+        	res_url ,
+        	res_dsc ,
+        	res_parent ,
+        	res_icon ,
+        	res_seq ,
+        	res_del ,
+        	res_stat ,
+        	cre_time 
+        ) VALUES (	
+        	#{resId} ,
+        	#{resName} ,
+        	#{resType} ,
+        	#{resUrl} ,
+        	#{resDsc} ,
+        	#{resParent} ,
+        	#{resIcon} ,
+        	#{resSeq} ,
+        	#{resDel} ,
+        	#{resStat} ,
+        	#{creTime} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE cas_resource 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resName)">res_name = #{resName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resType)">res_type = #{resType} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resUrl)">res_url = #{resUrl} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resDsc)">res_dsc = #{resDsc} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resParent)">res_parent = #{resParent} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resIcon)">res_icon = #{resIcon} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resSeq)">res_seq = #{resSeq} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resDel)">res_del = #{resDel} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resStat)">res_stat = #{resStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTime)">cre_time = #{creTime} </if>
+		</set>
+        WHERE 
+	        res_id = #{resId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM cas_resource WHERE
+        res_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  cas_resource  WHERE
+        res_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CasResource">
+		SELECT <include refid="CasResource_columns" />
+		FROM cas_resource WHERE 
+		res_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(res_id) FROM cas_resource 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CasResource">
+        SELECT <include refid="CasResource_columns" /> 
+		FROM cas_resource 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CasResource_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resId)">
+				AND res_id = #{resId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resName)">
+				AND res_name = #{resName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resType)">
+				AND res_type = #{resType}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resUrl)">
+				AND res_url = #{resUrl}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resDsc)">
+				AND res_dsc = #{resDsc}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resParent)">
+				AND res_parent = #{resParent}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resIcon)">
+				AND res_icon = #{resIcon}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resSeq)">
+				AND res_seq = #{resSeq}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resDel)">
+				AND res_del = #{resDel}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(resStat)">
+				AND res_stat = #{resStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeBegin)">
+				AND cre_time >= #{creTimeBegin}
+		   </if>
+		   <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(creTimeEnd)">
+				AND cre_time &lt;= #{creTimeEnd}
+		   </if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(res_id) FROM cas_resource 
+		<include refid="CasResource_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CasResource">
+    	SELECT <include refid="CasResource_columns" />
+	    FROM cas_resource 
+		<include refid="CasResource_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

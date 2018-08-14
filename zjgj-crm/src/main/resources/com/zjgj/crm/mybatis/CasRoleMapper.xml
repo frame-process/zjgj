@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjgj.crm.mybatis.CasRoleMybatisDao">
+
+	<resultMap id="RM_CasRole" type="com.zjgj.crm.entity.CasRole">
+        <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleDsc" column="role_dsc"/>
+        <result property="roleParent" column="role_parent"/>
+        <result property="roleStat" column="role_stat"/>
+        <result property="roleDel" column="role_del"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CasRole_columns">
+		role_id,role_name,role_dsc,role_parent,role_stat,role_del
+	</sql>
+	
+	<!-- 添加 -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cas_role (
+        	role_id ,
+        	role_name ,
+        	role_dsc ,
+        	role_parent ,
+        	role_stat ,
+        	role_del 
+        ) VALUES (	
+        	#{roleId} ,
+        	#{roleName} ,
+        	#{roleDsc} ,
+        	#{roleParent} ,
+        	#{roleStat} ,
+        	#{roleDel} 
+        )
+	</insert>
+    
+	<!-- 修改 -->
+	<update id="update" >
+        UPDATE cas_role 
+		<set>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleName)">role_name = #{roleName} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleDsc)">role_dsc = #{roleDsc} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleParent)">role_parent = #{roleParent} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleStat)">role_stat = #{roleStat} ,</if>
+			<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleDel)">role_del = #{roleDel} </if>
+		</set>
+        WHERE 
+	        role_id = #{roleId} 
+	</update>
+
+	<!-- 删除 -->
+    <delete id="delete">
+		DELETE FROM cas_role WHERE
+        role_id = #{id} 
+    </delete>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM  cas_role  WHERE
+        role_id IN 
+        <foreach item="item" collection="idsList" open="(" separator="," close=")">
+#{item}		</foreach>  
+    </delete>
+    
+	<!-- 根据主键获取对象 -->
+    <select id="getByID" resultMap="RM_CasRole">
+		SELECT <include refid="CasRole_columns" />
+		FROM cas_role WHERE 
+		role_id = #{id} 
+	</select>
+	
+	<!-- 获取总条数 -->
+	<select id="countAll" resultType="int">
+        SELECT count(role_id) FROM cas_role 
+    </select>
+	
+	<!-- 获取所有 -->
+	<select id="findAll" resultMap="RM_CasRole">
+        SELECT <include refid="CasRole_columns" /> 
+		FROM cas_role 
+    </select>
+	
+	<!-- 提取公共WHERE -->
+	<sql id="CasRole_where">
+		<where>
+			 
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleId)">
+				AND role_id = #{roleId}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleName)">
+				AND role_name = #{roleName}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleDsc)">
+				AND role_dsc = #{roleDsc}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleParent)">
+				AND role_parent = #{roleParent}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleStat)">
+				AND role_stat = #{roleStat}
+			</if>
+	       <if test="@com.zjgj.crm.util.Ognl@isNotEmpty(roleDel)">
+				AND role_del = #{roleDel}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据条件获取条数 -->
+    <select id="findNumberByCondition" resultType="int">
+        SELECT count(role_id) FROM cas_role 
+		<include refid="CasRole_where"/>    
+    </select>
+    
+	<!-- 根据条件获取集合 -->
+    <select id="findPageBreakByCondition" resultMap="RM_CasRole">
+    	SELECT <include refid="CasRole_columns" />
+	    FROM cas_role 
+		<include refid="CasRole_where"/>
+		
+		<if test="@com.zjgj.crm.util.Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+
