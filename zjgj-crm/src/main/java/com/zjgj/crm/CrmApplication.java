@@ -7,8 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
+import net.unicon.cas.client.configuration.EnableCasClient;
+
 @SpringBootApplication
 @MapperScan("com.zjgj.crm.mybatis")
+@EnableCasClient
 public class CrmApplication extends SpringBootServletInitializer {
 	private static Logger LOG = LoggerFactory.getLogger(CrmApplication.class);
 	public static void main(String[] args) {

@@ -7,7 +7,6 @@
 
 	<artifactId>zjgj-crm</artifactId>
 	<name>zjgj-crm</name>
-	<url>http://maven.apache.org</url>
 	<packaging>war</packaging>
 
 	<parent>
@@ -95,6 +94,12 @@
 		   <scope>provided</scope>
 		</dependency>
 	    
+	    <!-- cas client -->
+	   <dependency>
+	       <groupId>net.unicon.cas</groupId>
+	       <artifactId>cas-client-autoconfig-support</artifactId>
+	       <version>${cas.client.version}</version>     
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -8,7 +8,6 @@
 	<artifactId>zjgj-cas</artifactId>
 	<packaging>war</packaging>
 	<name>zjgj-cas</name>
-	<url>http://maven.apache.org</url>
 	<description>单点登陆</description>
 
 	<parent>
@@ -18,13 +17,36 @@
 	</parent>
 
 	<dependencies>
+        <dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
 		<dependency>
             <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-webapp-tomcat</artifactId>
+            <artifactId>cas-server-webapp${app.server}</artifactId>
             <version>${cas.version}</version>
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+		<!--服务注册-->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-json-service-registry</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+		<!--数据库认证相关 start-->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-jdbc-drivers</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-jdbc</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+
 	</dependencies>
 	
 	<dependencyManagement>
@@ -38,7 +60,22 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-	
+	<!-- 指定maven编译方式为jdk1.8版本 -->
+	<profiles>
+		<profile>
+			<id>jdk-1.8</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<jdk>${java.version}</jdk>
+			</activation>
+			<properties>
+				<maven.compiler.source>${java.version}</maven.compiler.source>
+				<maven.compiler.target>${java.version}</maven.compiler.target>
+				<maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
+			</properties>
+		</profile>
+	</profiles>
+		
 	<build>
 		<resources>
 			<resource>
@@ -84,12 +121,12 @@
                     <recompressZippedFiles>false</recompressZippedFiles>
                     <archive>
                         <compress>false</compress>
-                        <manifestFile>${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp-tomcat/META-INF/MANIFEST.MF</manifestFile>
+                        <manifestFile>${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp${app.server}/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
                     <overlays>
                         <overlay>
                             <groupId>org.apereo.cas</groupId>
-                            <artifactId>cas-server-webapp-tomcat</artifactId>
+                            <artifactId>cas-server-webapp${app.server}</artifactId>
                         </overlay>
                     </overlays>
                 </configuration>

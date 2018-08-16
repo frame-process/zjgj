@@ -18,6 +18,8 @@
   </modules>
 
 	<properties>
+		<cas.client.version>1.7.0-GA</cas.client.version>
+		<app.server>-tomcat</app.server> 
 		<mysql.version>8.0.11</mysql.version>
 		<druid.version>1.1.10</druid.version>
 		<pagehelper.version>1.2.5</pagehelper.version>
@@ -40,12 +42,17 @@
 
 	<dependencies>
 		<!-- Log libs -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
+		</dependency> -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>1.2.49</version>
 		</dependency>
-
+				
 		<!-- junit -->
 		<dependency>
 			<groupId>junit</groupId>
