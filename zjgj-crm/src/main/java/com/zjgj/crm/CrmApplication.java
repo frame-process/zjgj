@@ -15,6 +15,7 @@ import net.unicon.cas.client.configuration.EnableCasClient;
 public class CrmApplication extends SpringBootServletInitializer {
 	private static Logger LOG = LoggerFactory.getLogger(CrmApplication.class);
 	public static void main(String[] args) {
+		net.unicon.cas.client.configuration.CasClientConfigurationProperties a = null;
 		SpringApplication.run(CrmApplication.class, args);
         LOG.info("CrmApplication 启动成功");
 	}

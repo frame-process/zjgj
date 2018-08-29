@@ -1,0 +1,150 @@
+仔细看过后，觉得用得最多的应该是csvread函数、用户自定义变量以及CSV DATA CONFIG控制器这几个，但是做练习之后，在结果树和聚合报告中怎么查看执行结果是个问题，没找到对应的数据。
+
+正则表达式和数据库连接留待以后再研究。
+
+ 
+
+案例：邮箱登录操作，参数化登录的用户名
+
+方法一、依赖Jmeter自带的函数助手
+
+选项-->函数助手对话框，即可打开函数助手弹窗
+
+（1）比如使用函数_Random
+
+　　输入最小值、最大值，点击下方的【生成】按钮，即会生成：${__Random(1,5,)}
+
+　　
+
+　　假如邮箱是163的，则用户名参数的值直接填入：${__Random(1,5,)}@163.com，我测试的邮箱是内网测试用的域名是180chen.cn，则填写${__Random(1,5,)}@180chen.cn
+
+　　
+
+ 
+
+（2）比如使用函数__CSVRead
+
+　　先准备csv文件，可以先在excel文件里准备好数据，保存的时候格式选择csv格式；
+
+　　
+
+　　输入csv文件所在的路径:F:\test.csv，输入参数所在的列（注意：此处列数是从0开始数的，第一列是用户名，对应的列号为0，第二列是密码，对应的列号为1...），生成被调用的函数：${__CSVRead(F:\test.csv,0)}
+
+　　
+
+　　在参数对应的值处填入：${__CSVRead(F:\test.csv,0)}
+
+　　
+
+ 
+
+方法二、CSV Data Set Config
+
+选中取样器，右键：添加-配置元件-CSV Data Set Config，从csv文件中读取
+
+
+
+Filename:csv文件所在的路径以及名称如：F:\test.csv ；（其实不一定要csv文件，亲测txt格式的文件也可以）
+
+File encoding：给出页面的编码方式，可以不填写；这里以百度为例，它的源代码里 ，所以这里File encoding:gb2312
+Variable Names(comma-delimited)：给出变量名如：name,pwd;这里的变量名是给后面引用用的，如要用到这个文件的值，可以利用变量名来引用：${name},${pwd},如test.csv文件中有这样的数据:1@180chen.cn,abc1233,那${name}就可以引用到1@180chen.cn,${pwd}就可以引用到abc1233
+Delimiter(use '\t' for Tab):这个是用来隔开变量的分隔符，如上面的name,pwd,那分隔符就是“,”
+
+Allow quoted data?：是否允许引用数据，---这个目前还未弄明白，设置成True或者False都能正常引用数据。
+
+Recycle on EOF?：到了文件尾是否循环，True---继续从文件第一行开始读取，False---不再循环
+
+Stop thread on EOF?：到了文件尾是否停止线程，True---停止，False---不停止，注：当Recycle on EOF设置为True时，此项设置无效。
+
+Sharing mode：共享模式，All threads---所有线程，Current thread group—当前线程组，Current thread—当前线程。这个地方和LoadRunner中的迭代取之相反，经试验得出来的结果是：
+
+　　　　All threads：测试计划中所有线程，假如说有线程1到线程n (n>1)，线程1取了一次值后，线程2取值时，取到的是csv文件中的下一行，即与线程1取的不是同一行。
+
+　　　　Current thread group：当前线程组，假设有线程组A、线程组B，A组内有线程A1到线程An，线程组B内有线程B1到线程Bn。取之情况是：线程A1取到了第1行，线程A2取第2行，现在B1取第1行，线程B2取第2行。
+
+　　　　Current thread：当前线程。假设测试计划内有线程1到线程n (n>1)，则线程1取了第1行，线程2也取第1行。
+
+综上：CSV Data Set Config实现的功能跟之前用的：${__CSVRead(F:\test.csv,0)}这个函数实现的功能大体上是一样的。
+
+ 
+
+方法三、用户定义的变量
+
+选中取样器，右键：添加-配置原件-用户定义的变量
+
+
+
+在列表中填入名称和值，在别处就可以使用${name}、${pwd}来引用
+
+ 
+
+方法四、正则表达式提取器获取
+
+在打开登录页的时候服务器有返回一个sid，获取到sid后，然后登录进入到首页；所以在这个请求下添加后置处理器：右键-添加-后置处理器-正则表达式提取器
+
+
+
+第1部分：名称+注释，可不修改，只是为了方便自己识别
+
+第2部分：apply to 默认即可
+
+第3部分：要检查的字段：主体等选择，一般我们选择主体，即服务器返回给我们的页面主体信息
+
+第4部分：
+
+　　【引用名称】：就是参数名称，在别处引用；如输入mysid，别处引用的时候使用${mysid}
+
+　　【正则表达式】：表达式中()内的内容就是要提取的。如sid/(.*?)"，表示查找sid/字符串之后的内容，直到出现第一个"时结束；（注意括号里的表示提取的内容）
+
+　　【模板】：用$$引用起来，如果在正则表达式中有多个正则表达式（多个括号括起来的东东），则可以是$1$（表示只有一组数据），$2$等等，表示解析到的第1个、第2个值给mysid
+
+　　【匹配数字】：0代表随机取值，-1代表所有，1代表全部取值
+
+　　【缺省值】：如果参数没有取到值，则使用此处的缺省值
+
+注意：运行脚本后，在“察看结果树”监听器中，[响应数据]标签页先搜索sid出现的位置，及出现的规律，如出现的时候前面会有“sid/”字符串； 调试正则提取表达式的时候，可添加Debug Sampler来查看是否正确提取到对应的值（右键-添加-Sampler-Debug Sampler）
+
+ 
+
+方法五、从数据库获取
+
+1) 将其中的mysql-connector-java-5.1.34-bin.jar放到Jmeter的lib目录下
+
+2) 添加“配置元件”->“JDBC Connection Configuration”，设置下列参数：
+Variable Name：连接池名称
+
+Database URL：jdbc:mysql://host:port/db（jdbc:mysql://ip地址:端口号/数据库名称）
+
+JDBC Driver class：com.mysql.jdbc.Driver
+
+username：连接数据库的用户名（如root）
+
+password：连接数据库的密码
+
+ 
+
+ 
+
+3) 添加“Sampler”->“JDBC Request”，在SQL Query中输入查询语句，如下：
+select concat(domain,'+',po_pwd) as userpass from domain;
+
+ 
+
+Variable Name：连接池名称
+
+注意：该值要和JDBC Connection Configuration中配置的Variable Name值对应，否则会提示：No pool found named: 'pool12', ensure Variable Name matches Variable Name of JDBC Connection Configuration；
+
+4) 在JDBC请求中添加“后置处理器”->“正则表达式提取器”，以提取用户名、密码为例，设置正则表达式提取器的参数：
+
+　　引用名称：userPass
+　　正则表达式：(.*)\+(.*)
+　　模板：$1$$2$
+　　使用时，userPass_g1即为用户名，userPass_g2即为对应用户名的密码；
+
+ 　　
+
+注意：
+
+（1）+在正则表达式中是关键字，所以需要\转义。
+
+（2）匹配数字，填0或不填，表示随机读取，如果填正整数，如1，则不同虚拟用户或循环固定读取某行数据。

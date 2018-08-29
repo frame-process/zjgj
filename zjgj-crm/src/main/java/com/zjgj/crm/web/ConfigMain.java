@@ -9,6 +9,7 @@ import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
 import org.jasig.cas.client.util.HttpServletRequestWrapperFilter;
 import org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -20,16 +21,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-//@SpringBootApplication
-//@MapperScan("com.zjgj.crm.mybatis")
-@Configuration
-@Component
+//@Configuration
+//@Component
 public class ConfigMain {
+	
+//	@Value("${cas-server-logout-url}")
+//	private String logOutUrl;
+//	@Value("${cas.client-host-url}")
+//	private String clientHostUrl;
+	
     //url的前缀
-    private static final String CAS_SERVER_URL_PREFIX = "http://127.0.0.1:8080/cas";
+	@Value("${cas.server-url-prefix}")
+    private String CAS_SERVER_URL_PREFIX;// = "http://127.0.0.1:8080/cas";
 
     //本机的名称
-    private static final String SERVER_NAME = "http://127.0.0.1";
+    @Value("${cas.client-host-url}")
+    private String SERVER_NAME;//"http://127.0.0.1";
 
     /**
      * 登录过滤器
@@ -120,8 +127,6 @@ public class ConfigMain {
     }  
 
     /**
-     * @author yellowcong
-     * 创建日期:2018/02/05
      * 设定首页
      */
     @Configuration

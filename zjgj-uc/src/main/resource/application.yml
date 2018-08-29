@@ -1,0 +1,61 @@
+server:
+  port: 7002
+  session: 
+    tracking-modes: cookie
+
+spring:
+    application:
+        name:zjgj-uc
+    datasource:
+        name: test
+        url: jdbc:mysql://www.jinkzy.com:3306/jd-cx?useSSL=false
+        username: root
+        password: root
+        # 使用druid数据源
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        filters: stat
+        maxActive: 20
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+    cas:
+        sign-out-filters: /logout
+        auth-filters: /*
+        validate-filters: /*
+        request-wrapper-filters: /*
+        assertion-filters: /*
+        cas-server-login-url: http\://www.jinkzy.com\:8080/cas/login
+        cas-server-url-prefix: http\://www.jinkzy.com\:8080/cas
+        redirect-after-validation: true
+        use-session: true
+        server-name: http\://www.jinkzy.com\:8080/cas/login
+## 该配置节点为独立的节点，有很多同学容易将这个配置放在spring的节点下，导致配置无法被识别
+mybatis:
+  mapper-locations: classpath:com/zjgj/uc/mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.zjgj.uc.entry  # 注意：对应实体类的路径
+
+#pagehelper分页插件
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+#cas client配置
+#cas:
+#   server-url-prefix: http\://www.jinkzy.com\:8080/cas
+#   server-login-url: http\://www.jinkzy.com\:8080/cas/login
+#   client-host-url: http\://localhost
+#   validate-type: CAS
+#   #authentication-url-patterns[0]: /**
+#cas-server-logout-url: http\://www.jinkzy.com\:8080/cas/logout
+#app-login-url: http\://localhost/login/loginIn
+   

@@ -9,9 +9,9 @@
 </head>
 <body>
 <h1>当前所在子系统：测试系统1</h1>
-<h2><a href="http://yellowcong.com:8888/">系统1</a></h2>
-<h2><a href="http://yellowcong.com:8889/">系统2</a></h2>
-<b>Authenticated User Id:</b> <a href="logout.jsp" title="Click here to log out"><%= request.getRemoteUser() %>
+<h2><a href="http://localhost:7001/index">CRM</a></h2>
+<h2><a href="http://localhost:7002/index">用户</a></h2>
+<b>Authenticated User Id:</b> <a href="javascript:;" title="Click here to log out"><%= request.getRemoteUser() %>
 </a>
 <br/>
 <a href="<%=request.getContextPath() %>/user/loginOut1" title="Click here to log out">退出系统（方式1）</a>
