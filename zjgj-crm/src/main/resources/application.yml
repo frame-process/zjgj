@@ -8,7 +8,7 @@ spring:
         name:zjgj-crm
     datasource:
         name: test
-        url: jdbc:mysql://www.jinkzy.com:3306/jd-cx?useSSL=false
+        url: jdbc:mysql://127.0.0.1:3306/jd-cx?useSSL=false
         username: root
         password: root
         # 使用druid数据源
@@ -33,11 +33,11 @@ spring:
         validate-filters: /*
         request-wrapper-filters: /*
         assertion-filters: /*
-        cas-server-login-url: http\://www.jinkzy.com\:8080/cas/login
-        cas-server-url-prefix: http\://www.jinkzy.com\:8080/cas
+        cas-server-login-url: http\://127.0.0.1\:8080/cas/login
+        cas-server-url-prefix: http\://127.0.0.1\:8080/cas
         redirect-after-validation: true
         use-session: true
-        server-name: http\://www.jinkzy.com\:8080/cas/login
+        server-name: http\://127.0.0.1\:8080/cas/login
 ## 该配置节点为独立的节点，有很多同学容易将这个配置放在spring的节点下，导致配置无法被识别
 mybatis:
   mapper-locations: classpath:com/zjgj/crm/mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
@@ -51,11 +51,11 @@ pagehelper:
     params: count=countSql
 #cas client配置
 #cas:
-#   server-url-prefix: http\://www.jinkzy.com\:8080/cas
-#   server-login-url: http\://www.jinkzy.com\:8080/cas/login
+#   server-url-prefix: http\://127.0.0.1\:8080/cas
+#   server-login-url: http\://127.0.0.1\:8080/cas/login
 #   client-host-url: http\://localhost
 #   validate-type: CAS
 #   #authentication-url-patterns[0]: /**
-#cas-server-logout-url: http\://www.jinkzy.com\:8080/cas/logout
+#cas-server-logout-url: http\://127.0.0.1\:8080/cas/logout
 #app-login-url: http\://localhost/login/loginIn
    
