@@ -16,7 +16,6 @@ import net.unicon.cas.client.configuration.EnableCasClient;
 public class UcApplication extends SpringBootServletInitializer {
 	private static Logger LOG = LoggerFactory.getLogger(UcApplication.class);
 	public static void main(String[] args) {
-		net.unicon.cas.client.configuration.CasClientConfigurationProperties a = null;
 		SpringApplication.run(UcApplication.class, args);
         LOG.info("UcApplication 启动成功");
 	}
