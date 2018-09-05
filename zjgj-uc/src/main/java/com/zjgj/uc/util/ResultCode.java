@@ -10,8 +10,8 @@ public enum ResultCode {
 
     SUCCESS(200, "成功", "成功"),
     ERROR(500, "请联系管理员", "错误信息"),
-    PARAM_ERROR(501, "没有数据", "没有数据"),
-    DATA_NULL(502, "参数错误", "参数错误"),
+    PARAM_ERROR(501, "参数错误", "参数错误"),
+    DATA_NULL(502, "没有数据", "没有数据"),
     NOT_LOGIN(203, "没有登陆", "没有登陆");
 
 

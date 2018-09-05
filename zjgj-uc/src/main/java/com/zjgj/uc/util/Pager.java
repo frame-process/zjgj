@@ -2,7 +2,9 @@ package com.zjgj.uc.util;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties({"max_count","sql","countSql","segment","firstResult","page","rows","currePageNumberForString","firstResultForString"})
 public class Pager {
 
 	public static final Integer MAX_PAGE_SIZE = 100000;// 每页最大记录数限制
