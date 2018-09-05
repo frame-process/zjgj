@@ -12,3 +12,5 @@
 ###解决办法：
 ######$ git config --system --unset credential.helper
 ====之后你在push就会提示输入名称和密码
+####====免密码方式
+######$ git config --global credential.helper store
