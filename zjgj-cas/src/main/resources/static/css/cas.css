@@ -252,7 +252,7 @@ input {
     height: 62px;
     overflow: hidden;
     text-indent: -999em;
-    width: 190px;background:  url(../images/logo.png) no-repeat;background-size:100% auto;margin:5px
+    width: 190px;background:  url(../images/apereo-logo.png) no-repeat;background-size:100% auto;margin:5px
 }
 #sidebar { width: auto; height:430px;padding: 50px;}
 #sidebar .sidebar-content { padding-left: 20px; }

@@ -16,13 +16,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+@Controller
 public class CaptchaServlet extends HttpServlet {
     private static String numberAndLetter = "abcdefghijklmnopqrstuvwxyz";
 
     public CaptchaServlet() {
     }
-
-    protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping("/captcha.jpg")
+    public void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
         response.setHeader("Pragma", "No-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0L);
