@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"max_count","sql","countSql","segment","firstResult","page","rows","currePageNumberForString","firstResultForString"})
-public class Pager {
+@JsonIgnoreProperties({"max_count","sql","countSql","segment","page","rows","currePageNumberForString","firstResultForString"})
+public class Pager<T> {
 
 	public static final Integer MAX_PAGE_SIZE = 100000;// 每页最大记录数限制
 	public String max_count = "100000";
@@ -13,7 +13,7 @@ public class Pager {
 	private Integer pageSize = 10;// 每页记录数
 	private Integer totalCount = 0;// 总记录数
 	private Integer pageCount = 0;// 总页数
-	private List list;// 数据List
+	private List<T> list;// 数据List
 
 	private String sql;	//查询列表SQL
 	private String countSql;	//查询条数SQL
@@ -23,8 +23,6 @@ public class Pager {
 	private Integer startPageNumber;// 默认显示 。。。开始页数... 分页显示用到
 	private Integer endPageNumber;// 默认显示 。。。结束页数 ... 分页显示用到
 
-	private Integer firstResult;// first pagenum 显示的第一条记录是多少[开始条数]
-	
 	//easyui-datagrid-page
 	private Integer page;
 	private Integer rows;
@@ -143,29 +141,12 @@ public class Pager {
 		this.maxShowPageCount = maxShowPageCount;
 	}
 
-	public List getList() {
+	public List<T> getList() {
 		return list;
 	}
 
-	public void setList(List list) {
+	public void setList(List<T> list) {
 		this.list = list;
-	}
-
-	/**
-	 * 返回STRING类型在开始条数
-	 * 
-	 * @return
-	 */
-	public String getCurrePageNumberForString() {
-		return String.valueOf(this.getCurrePageNumber());
-	}
-
-	public String getFirstResultForString() {
-		return String.valueOf(this.getFirstResult());
-	}
-
-	public void setFirstResult(Integer firstResult) {
-		this.firstResult = firstResult;
 	}
 
 	public String getSql() {

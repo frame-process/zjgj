@@ -1,5 +1,10 @@
 package com.zjgj.uc.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -24,5 +29,11 @@ public class CasDeptServiceImpl extends BaseServiceImpl<CasDept,java.lang.Intege
 	protected BaseDao<CasDept, java.lang.Integer> getDao() {
 		return casDeptMybatisDao;
 	}
-	
+
+	@Override
+	public List<CasDept> getDeptByIdList(Set<Integer> deptIdList) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("deptIdList", deptIdList);
+		return this.casDeptMybatisDao.findPageBreakByCondition(param);
+	}
 }

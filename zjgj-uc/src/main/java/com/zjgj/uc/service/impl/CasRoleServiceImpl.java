@@ -1,5 +1,10 @@
 package com.zjgj.uc.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -23,6 +28,13 @@ public class CasRoleServiceImpl extends BaseServiceImpl<CasRole,java.lang.Intege
 	@Override
 	protected BaseDao<CasRole, java.lang.Integer> getDao() {
 		return casRoleMybatisDao;
+	}
+
+	@Override
+	public List<CasRole> getRoleByIdList(Set<Integer> roleIdList) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("roleIdList", roleIdList);
+		return this.casRoleMybatisDao.findPageBreakByCondition(param);
 	}
 	
 }

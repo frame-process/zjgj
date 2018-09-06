@@ -1,7 +1,10 @@
 package com.zjgj.uc.web;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -9,7 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysql.cj.util.StringUtils;
+import com.zjgj.uc.entity.CasDept;
+import com.zjgj.uc.entity.CasRole;
 import com.zjgj.uc.entity.CasUser;
+import com.zjgj.uc.entity.CasUserRole;
+import com.zjgj.uc.service.CasDeptService;
+import com.zjgj.uc.service.CasRoleService;
+import com.zjgj.uc.service.CasUserRoleService;
 import com.zjgj.uc.service.CasUserService;
 import com.zjgj.uc.util.DateUtils;
 import com.zjgj.uc.util.JsonResult;
@@ -27,11 +37,17 @@ import com.zjgj.uc.vo.CasUserVo;
 public class CasUserController {
 	@Resource
 	private CasUserService casUserService;
+	@Resource
+	private CasRoleService casRoleService;
+	@Resource
+	private CasUserRoleService casUserRoleService;
+	@Resource
+	private CasDeptService casDeptService;
 	/*
 	 * @desc 查询分页数据
 	 */
 	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public JsonResult list(CasUserVo casUserVo,Pager pager) {
+	public JsonResult list(CasUserVo casUserVo,Pager<CasUser> pager) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		//条件数据
 		pager = casUserService.findList(param,pager);
@@ -39,8 +55,74 @@ public class CasUserController {
 		if(pager.getList()==null || pager.getList().size()==0) {
 			return JsonResult.fail(ResultCode.DATA_NULL);
 		}
+		Set<Long> userIdList = new HashSet<Long>();
+		Set<Integer> deptIdList = new HashSet<Integer>();
+		for(CasUser casUser : (List<CasUser>)pager.getList()) {
+			userIdList.add(casUser.getUserId());
+			deptIdList.add(casUser.getDeptId());
+		}
+		List<CasUserRole> casUserRoleList = casUserRoleService.getUserRoleByIdList(userIdList);
+		Set<Integer> roleIdList = new HashSet<Integer>();
+		for(CasUserRole casUserRole : casUserRoleList) {
+			roleIdList.add(casUserRole.getRoleId());
+		}
+		List<CasRole> casRoleList = casRoleService.getRoleByIdList(roleIdList);
+		List<CasDept> casDeptList = casDeptService.getDeptByIdList(deptIdList);
+		for(CasUser casUser : (List<CasUser>)pager.getList()) {
+			String key = "roleName";
+			String val = getRoleNameByUserId(casUserRoleList, casRoleList, casUser.getUserId());
+			casUser.getExtData().put(key, val);
+			key = "deptName";
+			val = getDeptNameByDeptId(casDeptList, casUser.getDeptId());
+			casUser.getExtData().put(key, val);
+		}
 		
 		return JsonResult.success(pager);
+	}
+	/**
+	 * @desc 获取部门列表
+	 * @param casDeptList
+	 * @param deptId
+	 * @return
+	 */
+	private String getDeptNameByDeptId(List<CasDept> casDeptList, Integer deptId) {
+		if(deptId == null) return null;
+		if(casDeptList == null)return null;
+		for(CasDept casDept : casDeptList) {
+			if(deptId.equals(casDept.getDeptId())) {
+				return casDept.getDeptName();
+			}
+		}
+		return null;
+	}
+	/**
+	 * @desc 获取角色信息
+	 * @param casUserRoleList
+	 * @param casRoleList
+	 * @param userId
+	 * @return
+	 */
+	private String getRoleNameByUserId(List<CasUserRole> casUserRoleList, List<CasRole> casRoleList, Long userId) {
+		if(casUserRoleList == null)return null;
+		if(casRoleList == null) return null;
+		Set<Integer> roleIdList = new HashSet<Integer>();
+		for(CasUserRole casUserRole : casUserRoleList) {
+			if(userId.equals(casUserRole.getUserId())) {
+				roleIdList.add(casUserRole.getRoleId());
+			}
+		}
+		StringBuffer stringBuffer = new StringBuffer();
+		for(CasRole casRole : casRoleList) {
+			if(roleIdList.contains(casRole.getRoleId())
+					&& !StringUtils.isNullOrEmpty(casRole.getRoleName())) {
+				if(stringBuffer.length()>0) {
+					stringBuffer.append(","+casRole.getRoleName());
+				}else {
+					stringBuffer.append(casRole.getRoleName());
+				}
+			}
+		}
+		return stringBuffer.toString();
 	}
 	/*
 	  1) GET:- Used when the client is requesting a resource on the Web server.

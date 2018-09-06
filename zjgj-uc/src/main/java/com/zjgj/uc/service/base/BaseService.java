@@ -112,7 +112,7 @@ public interface BaseService<T, PK extends Serializable> {
 	 * @throws DataAccessException
 	 * @throws GenericBusinessException
 	 */
-	Pager findList(Map<String, Object> map, Pager pager) throws DataAccessException;
+	Pager<T> findList(Map<String, Object> map, Pager<T> pager) throws DataAccessException;
 	
 	
 }

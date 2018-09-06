@@ -112,7 +112,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
 	 * @see core.cf.common.service.BaseService#findList(java.util.Map, core.cf.common.modules.utils.Pager)
 	 */
 	
-	public Pager findList(Map<String, Object> map, Pager pager) throws DataAccessException {
+	public Pager<T> findList(Map<String, Object> map, Pager<T> pager) throws DataAccessException {
 
 		List<T> result = this.getDao().findPageBreakByCondition(map, new RowBounds(pager.getFirstResult(), pager.getPageSize()));
 		pager.setTotalCount(this.getDao().findNumberByCondition(map));

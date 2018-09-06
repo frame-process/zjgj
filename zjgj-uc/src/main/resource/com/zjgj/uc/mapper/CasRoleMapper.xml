@@ -104,6 +104,13 @@
 	       <if test="@com.zjgj.uc.util.Ognl@isNotEmpty(roleDel)">
 				AND role_del = #{roleDel}
 			</if>
+			<if test="@com.zjgj.uc.util.Ognl@isNotEmpty(roleIdList)">
+				AND role_id IN
+				<foreach collection="roleIdList" index="index" item="roleId"
+					open="(" separator="," close=")">
+					#{roleId}
+				</foreach>
+			</if>
 		</where>
 	</sql>
 	
