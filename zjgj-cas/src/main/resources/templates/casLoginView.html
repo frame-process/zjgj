@@ -5,13 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>登录系统  Central Authentication Service</title>
+    <title th:text="@{${#themes.code('zjgj.pageTitle')}}"></title>
     <link rel="stylesheet" th:href="@{${#themes.code('standard.custom.css.file')}}">
     <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
 </head>
 
 <body id="cas" style='background: url("images/login_bg.jpg") no-repeat fixed;background-size: 100% auto'>
-
 <div id="container">
 
     <div id="content" class="login-content">
@@ -23,26 +22,10 @@
             </div>
             <div id="pc-login">
 		        
-		        
                 <form id="fm1" th:object="${credential}" method="post">
                 	<div th:if="${#fields.hasErrors('*')}">
 			            <span th:each="err : ${#fields.errors('*')}" th:utext="${err}"/>
 			        </div>
-			        <h2 th:utext="#{screen.welcome.instructions}"></h2>
-		        <section class="row">
-		            <label for="username" th:utext="#{screen.welcome.label.netid}"/>
-		            <div th:unless="${openIdLocalId}">
-		                <input class="required"
-		                       id="username"
-		                       size="25"
-		                       tabindex="1"
-		                       type="text"
-		                       th:disabled="${guaEnabled}"
-		                       th:field="*{username}"
-		                       th:accesskey="#{screen.welcome.label.netid.accesskey}"
-		                       autocomplete="off"/>
-		            </div>
-		        </section>
                     <section class="input-outer">
                         <i class='ui-user'></i>
                                 <input id="username" name="username" class="text" tabindex="1" placeholder="请输入用户名" accesskey="n" type="text" value="" size="25"/>
@@ -65,7 +48,7 @@
                             <label class="i-checks">
                                 <input type="checkbox" id="rememberMe" name="rememberMe" value="true">
                                 <i></i>
-                                记住我
+                                	记住我
                             </label>
                         </div>
                     </section>
@@ -77,22 +60,26 @@
                     </section>
 
                     <section class="row btn-row">
-                        <input type="hidden" name="lt" value="LT-72-wwnBiFnsLVXkoFp6612dMD04YKzd9Z-127.0.0.1"/>
+                        <!-- <input type="hidden" name="lt" value="LT-72-wwnBiFnsLVXkoFp6612dMD04YKzd9Z-127.0.0.1"/>
                         <input type="hidden" name="execution" value="e1s1"/>
-                        <input type="hidden" name="_eventId" value="submit"/>
+                        <input type="hidden" name="_eventId" value="submit"/> -->
+                        
+                        <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+            			<input type="hidden" name="_eventId" value="submit"/>
+            			<input type="hidden" name="geolocation"/>
 
                         <input class="btn btn-submit btn-block" name="submit" accesskey="l" onclick="return saveUsername()"
                                value="登录" tabindex="4" type="submit"/>
                     </section>
                     <section class="row helper" >
-                        <a href="http://uc.jinkzy.com/help/" target="_blank" style="color:#888;text-decoration: none">使用帮助</a>
+                        <a href="javascript:;" target="_blank" style="color:#888;text-decoration: none">使用帮助</a>
                     </section>
                 </form>
             </div>
-            <div id="module-login">
-                <img src="images/download-page.png" >
+             <!-- <div id="module-login">
+               <img src="images/download-page.png" >
                 <div style="font-family: 微软雅黑;font-size: 18px;text-align: center;font-weight: 300;">客户端下载</div>
-            </div>
+            </div> -->
 
         </div>
     </div>

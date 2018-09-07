@@ -1,4 +1,4 @@
-package com.zjgj.cas.common.util;
+package com.zjgj.cas.util;
 
 /**
  * Created by liuguangsheng on 2016/8/18.
