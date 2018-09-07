@@ -32,10 +32,10 @@ public class LoginCustomAuthHandler extends AbstractPreAndPostProcessingAuthenti
     	UserPassCaptchaCredential userPassCaptchaCredential = (UserPassCaptchaCredential) credential;
     	logger.info("登陆验证:"+userPassCaptchaCredential.getPassword());
 
-        String capcha = userPassCaptchaCredential.getCapcha();
+        String captcha = userPassCaptchaCredential.getCaptcha();
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        String right = attributes.getRequest().getSession().getAttribute("capcha").toString();
-        if(!capcha.equals(right)){
+        String right = attributes.getRequest().getSession().getAttribute("captcha").toString();
+        if(!captcha.equals(right)){
             throw new FailedLoginException("验证码错误");
         }
 

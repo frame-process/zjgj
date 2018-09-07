@@ -29,10 +29,10 @@ public class LoginFormCustomAuthHandler extends AbstractPreAndPostProcessingAuth
     @Override
     protected HandlerResult doAuthentication(Credential credential) throws GeneralSecurityException, PreventedException {
     	UserPassCaptchaCredential sysCredential = (UserPassCaptchaCredential) credential;
-    	Assert.isNull(sysCredential.getCapcha(), "验证码不能为空");
+    	Assert.isNull(sysCredential.getCaptcha(), "验证码不能为空");
     	Assert.isNull(sysCredential.getUsername(), "用户名不能为空");
     	Assert.isNull(sysCredential.getPassword(), "密码不能为空");
-    	logger.info("验证码:"+sysCredential.getCapcha());
+    	logger.info("验证码:"+sysCredential.getCaptcha());
     	//Assert.isTrue("12ab!@".equals(sysCredential.getPassword()), "");createPrincipal
     	return createHandlerResult(credential, this.principalFactory.createPrincipal(((UserPassCaptchaCredential) credential).getUsername(), Collections.emptyMap()), null);
     }

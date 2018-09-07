@@ -6,15 +6,15 @@ import org.apereo.cas.authentication.UsernamePasswordCredential;
 
 public class UserPassCaptchaCredential extends UsernamePasswordCredential{
 
-    @Size(min = 4, message = "require capcha")
-    private String capcha;
+    @Size(min = 4, message = "require captcha")
+    private String captcha;
 
-    public String getCapcha() {
-        return capcha;
+    public String getCaptcha() {
+        return captcha;
     }
 
-    public UserPassCaptchaCredential setCapcha(String capcha) {
-        this.capcha = capcha;
+    public UserPassCaptchaCredential setCaptcha(String captcha) {
+        this.captcha = captcha;
         return this;
     }
 
@@ -22,7 +22,7 @@ public class UserPassCaptchaCredential extends UsernamePasswordCredential{
     public int hashCode() {
         return new HashCodeBuilder()
                 .appendSuper(super.hashCode())
-                .append(this.capcha)
+                .append(this.captcha)
                 .toHashCode();
     }
 }

@@ -31,7 +31,7 @@ public class CustomerWebflowConfigurer extends DefaultWebflowConfigurer {
             this.createFlowVariable(flow, "credential", UserPassCaptchaCredential.class);
             ViewState state = (ViewState)this.getState(flow, "viewLoginForm", ViewState.class);
             BinderConfiguration cfg = this.getViewStateBinderConfiguration(state);
-            cfg.addBinding(new BinderConfiguration.Binding("capcha", (String)null, true));
+            cfg.addBinding(new BinderConfiguration.Binding("captcha", (String)null, true));
         }
     }
 }
