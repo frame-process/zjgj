@@ -25,7 +25,7 @@ import org.springframework.webflow.execution.RequestContext;
 import com.zjgj.cas.util.ConstUtil;
 @RestController
 public class CaptchaController {
-    @GetMapping("/check")
+    /*@GetMapping("/check")
     public String check(RequestContext context, MessageContext messageContext) {
         String captcha = context.getRequestParameters().get("captcha");
         Object session_captcha = WebUtils.getHttpServletRequestFromExternalWebflowContext(context).getSession().getAttribute("captcha");
@@ -41,7 +41,7 @@ public class CaptchaController {
     
     private boolean valid(String c1, String c2) {
         return c1.equalsIgnoreCase(c2);
-    }
+    }*/
     
     @GetMapping("/captcha.jpg")
     public void Captcha(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
@@ -49,7 +49,7 @@ public class CaptchaController {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0L);
         response.setContentType("image/png");
-        short width = 136;
+        short width = 96;
         byte height = 45;
         BufferedImage image = new BufferedImage(width, height, 1);
         Graphics2D g = (Graphics2D)image.getGraphics();
@@ -72,7 +72,7 @@ public class CaptchaController {
         g.setColor(getRandColor());
         g.setFont(var14);
         String var15 = getRandomString(ConstUtil.VALIDATE_CODE_LEN).toUpperCase();
-        g.drawString(var15, 10, 35);
+        g.drawString(var15, 11, 35);
         g.dispose();
         req.getSession().setAttribute("captcha", var15);
         ImageIO.write(image, "PNG", response.getOutputStream());

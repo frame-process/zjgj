@@ -6,7 +6,7 @@ import org.apereo.cas.authentication.UsernamePasswordCredential;
 
 public class UserPassCaptchaCredential extends UsernamePasswordCredential{
 
-    @Size(min = 4, message = "require captcha")
+    @Size(min = 4, message = "require.captcha")
     private String captcha;
 
     public String getCaptcha() {
