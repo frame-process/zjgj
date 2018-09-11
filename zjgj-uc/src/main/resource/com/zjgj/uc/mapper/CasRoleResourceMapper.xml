@@ -23,6 +23,20 @@
         	#{resId} 
         )
 	</insert>
+	
+	<!-- 批量添加 -->
+	<insert id="batchSave" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cas_role_resource (
+        	role_id ,
+        	res_id 
+        ) VALUES 
+        <foreach item="item" collection="roleResList" open="" separator="," close=";">
+			(	
+	        	#{item.roleId} ,
+	        	#{item.resId} 
+	        )
+		</foreach>
+	</insert>
     
 	<!-- 修改 -->
 	<update id="update" >
@@ -44,9 +58,10 @@
 	<!-- 批量删除 -->
 	<delete id="batchDelete" parameterType="java.util.List">
         DELETE FROM  cas_role_resource  WHERE
-        role_idres_id IN 
+        role_id IN 
         <foreach item="item" collection="idsList" open="(" separator="," close=")">
-#{item}		</foreach>  
+			#{item}		
+		</foreach>  
     </delete>
     
 	<!-- 根据主键获取对象 -->
@@ -77,6 +92,13 @@
 			</if>
 	       <if test="@com.zjgj.uc.util.Ognl@isNotEmpty(resId)">
 				AND res_id = #{resId}
+			</if>
+			<if test="@com.zjgj.uc.util.Ognl@isNotEmpty(roleIdList)">
+				AND role_id IN
+				<foreach collection="roleIdList" index="index" item="roleId"
+					open="(" separator="," close=")">
+					#{roleId}
+				</foreach>
 			</if>
 		</where>
 	</sql>

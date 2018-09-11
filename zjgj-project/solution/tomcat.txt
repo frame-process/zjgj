@@ -1,0 +1,62 @@
+<Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+			   
+			   
+1、Tomcat自带的监控指标servelet
+第一步：在配置文件中增加用户访问的权限。修改conf/tomcat-users.xml文件，在其中加入一行 <user username="用户名" password="密码" roles="manager"/>
+第二步：在IE浏览器中输入http://IP地址:端口号/manager/status
+第三步：在弹出的对话框中输入第一步设置的用户名和密码，即可查看到应用服务器的相关性能指标数据。
+2、使用专门的工具进行监控，网上很多在此就不再赘述。
+
+ 
+
+ 
+五、Tomcat服务器的监控
+在tomcat配置文件server.xml中的配置中，和连接数相关的参数有：
+minProcessors：最小空闲连接线程数，用于提高系统处理性能，默认值为10
+maxProcessors：最大连接线程数，即：并发处理的最大请求数，默认值为75
+acceptCount：允许的最大连接数，即等待队列，指定当所有可以使用的处理请求的线程数都被使用时，可以放到处理队列中的请求数，超过这个数的请求将不予处理。应大于等于maxProcessors，默认值为100，
+enableLookups：是否反查域名，取值为：true或false。为了提高处理能力，应设置为false
+connectionTimeout：网络连接超时，单位：毫秒。设置为0表示永不超时，这样设置有隐患的。通常可设置为30000毫秒。
+和最大连接数相关的参数为maxProcessors和acceptCount。如果要加大并发连接数应同时加大这两个参数。
+web server允许的最大连接数还受制于操作系统的内核参数设置，通常Windows是2000个左右，Linux是1000个左右。
+3、server.xml配置简介
+下面讲述这个文件中的基本配置信息，更具体的配置信息请参考tomcat的文档：
+    server:
+          1、port指定一个端口，这个端口负责监听关闭tomcat的请求
+          2、shutdown指定向端口发送的命令字符串
+    service:
+          1、name指定service的名字
+    Connector(表示客户端和service之间的连接)：
+          1、port指定服务器端要创建的端口号，并在这个断口监听来自客户端的请求
+          2、minProcessors服务器启动时创建的处理请求的线程数
+          3、maxProcessors最大可以创建的处理请求的线程数
+          4、enableLookups如果为true，则可以通过调用request.getRemoteHost()进行DNS查询来得到远程客户端的实际主机名，若为false则不进行DNS查询，而是返回其ip地址
+          5、redirectPort指定服务器正在处理http请求时收到了一个SSL传输请求后重定向的端口号
+          6、acceptCount指定当所有可以使用的处理请求的线程数都被使用时，可以放到处理队列中的请求数，超过这个数的请求将不予处理
+          7、connectionTimeout指定超时的时间数(以毫秒为单位)
+线程数可以大致上用“同时在线人数*每秒用户操作次数（每秒的连接数）*系统平均操作时间（服务器的处理时间）”来计算。
+    Engine(表示指定service中的请求处理机，接收和处理来自Connector的请求)：
+          1、defaultHost指定缺省的处理请求的主机名，它至少与其中的一个host元素name属性值是一样的。
+    Context(表示一个web应用程序)：
+          1、docBase应用程序的路径或者是WAR文件存放的路径
+          2、path表示此web应用程序的url的前缀，这样请求的url为
+http://localhost:8080/path/****
+          3、reloadable这个属性非常重要，如果为true，则tomcat会自动检测应用程序的/WEB-INF/lib和/WEB-INF/classes目录的变化，自动装载新的应用程序，我们可以在不重起tomcat的情况下改变应用程序
+    host(表示一个虚拟主机)：
+          1、name指定主机名
+          2、appBase应用程序基本目录，即存放应用程序的目录
+          3、unpackWARs如果为true，则tomcat会自动将WAR文件解压，否则不解压，直接从WAR文件中运行应用程序
+    Logger(表示日志，调试和错误信息)：
+          1、className指定logger使用的类名，此类必须实现org.apache.catalina.Logger接口
+          2、prefix指定log文件的前缀
+          3、suffix指定log文件的后缀
+          4、timestamp如果为true，则log文件名中要加入时间，例:localhost_log.2001-10-04.txt
+  Realm(表示存放用户名，密码及role的数据库)：
+          1、className指定Realm使用的类名，此类必须实现org.apache.catalina.Realm接口
+  Valve(功能与Logger差不多，其prefix和suffix属性解释和Logger中的一样)：
+          1、className指定Valve使用的类名，如用org.apache.catalina.valves.AccessLogValve
+类可以记录应用程序的访问信息
+directory（指定log文件存放的位置）：
+   1、pattern有两个值，common 

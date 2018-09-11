@@ -142,6 +142,13 @@
 		   <if test="@com.zjgj.uc.util.Ognl@isNotEmpty(creTimeEnd)">
 				AND cre_time &lt;= #{creTimeEnd}
 		   </if>
+		   <if test="@com.zjgj.uc.util.Ognl@isNotEmpty(resIdList)">
+				AND res_id IN
+				<foreach collection="resIdList" index="index" item="resId"
+					open="(" separator="," close=")">
+					#{resId}
+				</foreach>
+			</if>
 		</where>
 	</sql>
 	

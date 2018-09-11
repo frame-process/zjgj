@@ -13,11 +13,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysql.cj.util.StringUtils;
+import com.zjgj.uc.dict.DelTagEnum;
+import com.zjgj.uc.dict.StatTagEnum;
 import com.zjgj.uc.entity.CasDept;
+import com.zjgj.uc.entity.CasResource;
 import com.zjgj.uc.entity.CasRole;
+import com.zjgj.uc.entity.CasRoleResource;
 import com.zjgj.uc.entity.CasUser;
 import com.zjgj.uc.entity.CasUserRole;
 import com.zjgj.uc.service.CasDeptService;
+import com.zjgj.uc.service.CasResourceService;
+import com.zjgj.uc.service.CasRoleResourceService;
 import com.zjgj.uc.service.CasRoleService;
 import com.zjgj.uc.service.CasUserRoleService;
 import com.zjgj.uc.service.CasUserService;
@@ -40,15 +46,21 @@ public class CasUserController {
 	@Resource
 	private CasRoleService casRoleService;
 	@Resource
+	private CasRoleResourceService casRoleResourceService;
+	@Resource
 	private CasUserRoleService casUserRoleService;
 	@Resource
 	private CasDeptService casDeptService;
+	@Resource
+	private CasResourceService casResourceService;
 	/*
 	 * @desc 查询分页数据
 	 */
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public JsonResult list(CasUserVo casUserVo,Pager<CasUser> pager) {
 		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("userDel", DelTagEnum.NO.getId());//未删除
+		param.put("userStat", StatTagEnum.VALID.getId());//已启用
 		//条件数据
 		pager = casUserService.findList(param,pager);
 		
@@ -148,13 +160,24 @@ public class CasUserController {
 		if(userId==null) {
 			return JsonResult.fail(ResultCode.PARAM_ERROR);
 		}
-		CasUser casUser = this.casUserService.getByID(userId);
-		if(casUser==null) {
+		
+		Set<Long> userIdList = new HashSet<Long>();
+		userIdList.add(userId);
+		List<CasUserRole> casUserRoleList = casUserRoleService.getUserRoleByIdList(userIdList);
+		Set<Integer> roleIdList = new HashSet<Integer>();
+		for(CasUserRole casUserRole : casUserRoleList) {
+			roleIdList.add(casUserRole.getRoleId());
+		}
+		List<CasRoleResource> casRoleResourceList = this.casRoleResourceService.getRoleResourceByIdList(roleIdList);
+		Set<Integer> resIdList = new HashSet<Integer>();
+		for(CasRoleResource casRoleResource : casRoleResourceList) {
+			resIdList.add(casRoleResource.getRoleId());
+		}
+		List<CasResource> casResourceList = this.casResourceService.getResourceByIdList(resIdList);
+		if(casResourceList==null || casResourceList.size()==0) {
 			return JsonResult.fail(ResultCode.DATA_NULL);
 		}
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("id", casUser.getUserId());
-		return JsonResult.success(data);
+		return JsonResult.success(casResourceList);
 	}
 	/*
 	  3) POST:- Used when the client is sending information or data to the server—for example, filling out an online form (i.e. Sends a large amount of complex data to the Web Server).
@@ -181,7 +204,7 @@ public class CasUserController {
 	 */
 	@RequestMapping(method=RequestMethod.DELETE)
 	public JsonResult delete(CasUser casUser) {
-		casUser.setUserDel(1);
+		casUser.setUserDel(DelTagEnum.YES.getId());
 		this.casUserService.update(casUser);
 		return JsonResult.success();
 	}
@@ -197,10 +220,4 @@ public class CasUserController {
 	  8) CONNECT:- Used when the client wants to establish a transparent connection to a remote host, usually to facilitate SSL-encrypted communication (HTTPS) through an HTTP proxy.
 　　　　当客户端想要确定一个明确的连接到远程主机的时候使用，通常便于通过Http代理服务器进行SSL加密通信（Https）连接使用。
 	 */
-	@RequestMapping("list")
-	public Pager list2(Pager pager) {
-		Map<String, Object> param = new HashMap<String, Object>();
-		pager = casUserService.findList(param,pager);
-		return pager;
-	}
 }

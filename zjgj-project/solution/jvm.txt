@@ -1,0 +1,41 @@
+-Dlog.path.prefix=/export/Logs/appoint-crabs-web/server1 -Ddeploy.app.id=35187 -Ddeploy.app.name=appoint-crabs-web -Ddeploy.instance.id=884001 -Ddeploy.data.path=/export/Instances/appoint-crabs-web -Ddeploy.logs.path=/export/Logs/appoint-crabs-web -Ddeploy.instance.logs.path=/export/Logs/appoint-crabs-web/server1 -Dins_id=884001 -Ddeploy.dynamic.config.dir=/export/Packages/appoint-crabs-web/20180824154119/WEB-INF/classes -Djava.util.logging.config.file=/export/Instances/appoint-crabs-web/server1/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.library.path=/usr/local/lib -Xms1024m -Xmx1024m -XX:MaxPermSize=256m -XX:+UnlockExperimentalVMOptions -Xms1024m -Xmx1024m -Xmn350m -XX:ParallelGCThreads=2 -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -Djava.awt.headless=true -Dsun.net.client.defaultConnectTimeout=60000 -Dsun.net.client.defaultReadTimeout=60000 -Djmagick.systemclassloader=no -Dnetworkaddress.cache.ttl=300 -Dsun.net.inetaddr.ttl=300 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/export/Instances/appoint-crabs-web/server1/logs -XX:ErrorFile=/export/Instances/appoint-crabs-web/server1/logs/java_error_%p.log -Djava.endorsed.dirs=/export/servers/tomcat8.0.30/endorsed -Dcatalina.base=/export/Instances/appoint-crabs-web/server1 -Dcatalina.home=/export/servers/tomcat8.0.30 -Djava.io.tmpdir=/export/Instances/appoint-crabs-web/server1/temp
+
+###############调整后##########
+-Dlog.path.prefix=/export/Logs/appoint-crabs-web/server1 -Ddeploy.app.id=35187 -Ddeploy.app.name=appoint-crabs-web -Ddeploy.instance.id=884001 -Ddeploy.data.path=/export/Instances/appoint-crabs-web -Ddeploy.logs.path=/export/Logs/appoint-crabs-web -Ddeploy.instance.logs.path=/export/Logs/appoint-crabs-web/server1 -Dins_id=884001 -Ddeploy.dynamic.config.dir=/export/Packages/appoint-crabs-web/20180822091554/WEB-INF/classes -Djava.util.logging.config.file=/export/Instances/appoint-crabs-web/server1/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.library.path=/usr/local/lib -Xms1024m -Xmx1024m -XX:MaxPermSize=256m -XX:+UnlockExperimentalVMOptions -Xms1024m -Xmx1024m -Xmn350m -XX:ParallelGCThreads=2 -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -Djava.awt.headless=true -Dsun.net.client.defaultConnectTimeout=60000 -Dsun.net.client.defaultReadTimeout=60000 -Djmagick.systemclassloader=no -Dnetworkaddress.cache.ttl=300 -Dsun.net.inetaddr.ttl=300 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/export/Instances/appoint-crabs-web/server1/logs -XX:ErrorFile=/export/Instances/appoint-crabs-web/server1/logs/java_error_%p.log -Djava.endorsed.dirs=/export/servers/tomcat8.0.30/endorsed -Dcatalina.base=/export/Instances/appoint-crabs-web/server1 -Dcatalina.home=/export/servers/tomcat8.0.30 -Djava.io.tmpdir=/export/Instances/appoint-crabs-web/server1/temp
+
+###############调整前##########
+-Dlog.path.prefix=/export/Logs/appoint-crabs-web/server1 -Ddeploy.app.id=35187 -Ddeploy.app.name=appoint-crabs-web -Ddeploy.instance.id=878543 -Ddeploy.data.path=/export/Instances/appoint-crabs-web -Ddeploy.logs.path=/export/Logs/appoint-crabs-web -Ddeploy.instance.logs.path=/export/Logs/appoint-crabs-web/server1 -Dins_id=878543 -Ddeploy.dynamic.config.dir=/export/Packages/appoint-crabs-web/20180820152100/WEB-INF/classes -Djava.util.logging.config.file=/export/Instances/appoint-crabs-web/server1/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.library.path=/usr/local/lib -Xms1024m -Xmx1024m -XX:MaxPermSize=256m -XX:+UnlockExperimentalVMOptions -Djava.awt.headless=true -Dsun.net.client.defaultConnectTimeout=60000 -Dsun.net.client.defaultReadTimeout=60000 -Djmagick.systemclassloader=no -Dnetworkaddress.cache.ttl=300 -Dsun.net.inetaddr.ttl=300 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/export/Instances/appoint-crabs-web/server1/logs -XX:ErrorFile=/export/Instances/appoint-crabs-web/server1/logs/java_error_%p.log -Djava.endorsed.dirs=/export/servers/tomcat8.0.30/endorsed -Dcatalina.base=/export/Instances/appoint-crabs-web/server1 -Dcatalina.home=/export/servers/tomcat8.0.30 -Djava.io.tmpdir=/export/Instances/appoint-crabs-web/server1/temp
+
+####flight_h5
+-Dlog.path.prefix=/export/Logs/virtual-id-flight-h5/server1 -Ddeploy.app.id=23933 -Ddeploy.app.name=virtual-id-flight-h5 -Ddeploy.instance.id=527353 -Ddeploy.data.path=/export/Instances/virtual-id-flight-h5 -Ddeploy.logs.path=/export/Logs/virtual-id-flight-h5 -Ddeploy.instance.logs.path=/export/Logs/virtual-id-flight-h5/server1 -Dins_id=527353 -Ddeploy.dynamic.config.dir=/export/Packages/virtual-id-flight-h5/20180628160946/WEB-INF/classes -Djava.util.logging.config.file=/export/Instances/virtual-id-flight-h5/server1/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.library.path=/usr/local/lib -Xms1024m -Xmx1024m -XX:MaxPermSize=256m -XX:+UnlockExperimentalVMOptions -Djava.awt.headless=true -Dsun.net.client.defaultConnectTimeout=60000 -Dsun.net.client.defaultReadTimeout=60000 -Djmagick.systemclassloader=no -Dnetworkaddress.cache.ttl=300 -Dsun.net.inetaddr.ttl=300 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/export/Instances/virtual-id-flight-h5/server1/logs -XX:ErrorFile=/export/Instances/virtual-id-flight-h5/server1/logs/java_error_%p.log -Djava.endorsed.dirs=/export/servers/tomcat8.0.30/endorsed -Dcatalina.base=/export/Instances/virtual-id-flight-h5/server1 -Dcatalina.home=/export/servers/tomcat8.0.30 -Djava.io.tmpdir=/export/Instances/virtual-id-flight-h5/server1/temp
+
+读了Charlie Martin的回复以后，我很想知道堆内存的大小是否能够给创建的线程数带来不同，然后我就被结果惊呆了：在Vista Home Premium SP1系统上，
+使用JDK 1.6.0_11，设置堆内存的大小从2M到1024M来执行Charlie的测试程序。比如：创建2M的堆内存，我使用的虚拟机参数是：-Xms2m -Xmx2m.
+
+下面是我的测试结果：
+
+2 mb --> 5744 threads
+4 mb --> 5743 threads
+8 mb --> 5735 threads
+12 mb --> 5724 threads
+16 mb --> 5712 threads
+24 mb --> 5687 threads
+32 mb --> 5662 threads
+48 mb --> 5610 threads
+64 mb --> 5561 threads
+96 mb --> 5457 threads
+128 mb --> 5357 threads
+192 mb --> 5190 threads
+256 mb --> 5014 threads
+384 mb --> 4606 threads
+512 mb --> 4202 threads
+768 mb --> 3388 threads
+1024 mb --> 2583 threads
+
+Neil Coffey的回答:
+
+绝对理论上的最大线程数是进程的用户地址空间除以线程栈的大小（现实中，如果内存全部给线程栈使用，就不会有能运行的程序了）。因此，以32位Windows系统为例，每一个进程的用户地址空间是2G，假如每个线程栈的大小是128K，最多会有16384(=2*1024*1024 / 128)个线程。实际在XP系统上，我发现大约能启动13000个线程。
+
+然后，我认为，你的问题本质上是：(a)你是否可以在你的代码中有效的管理许多的线程，不让他们做很显然是愚蠢的事情（比如：让他们在同一个object对象上等待随后被调用notifyAll()…）,（b）操作系统是否可以有效地管理这许多线程。基本上来说，如果(a)的答案是”yes”的话，(b)的答案也是”yes”。
+
+很巧的是，你可以在Thread的构造函数中设置线程栈的大小，但是，你不需要也不应该把这个和虚拟机参数弄混淆。

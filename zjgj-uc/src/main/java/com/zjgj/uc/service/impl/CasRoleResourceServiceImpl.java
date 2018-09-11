@@ -1,5 +1,10 @@
 package com.zjgj.uc.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -25,4 +30,17 @@ public class CasRoleResourceServiceImpl extends BaseServiceImpl<CasRoleResource,
 		return casRoleResourceMybatisDao;
 	}
 	
+	@Override
+	public List<CasRoleResource> getRoleResourceByIdList(Set<Integer> roleIdList) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("roleIdList", roleIdList);
+		return this.casRoleResourceMybatisDao.findPageBreakByCondition(param);
+	}
+
+	@Override
+	public void batchSave(List<CasRoleResource> casRoleResourceList) {
+		Map<String, List<CasRoleResource>> map = new HashMap<String, List<CasRoleResource>>();
+		map.put("roleResList", casRoleResourceList);
+		this.casRoleResourceMybatisDao.batchSave(map);
+	}
 }
