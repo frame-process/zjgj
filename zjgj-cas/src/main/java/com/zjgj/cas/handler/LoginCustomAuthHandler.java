@@ -36,13 +36,13 @@ public class LoginCustomAuthHandler extends AbstractPreAndPostProcessingAuthenti
         String captcha = userPassCaptchaCredential.getCaptcha();
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         String right = attributes.getRequest().getSession().getAttribute("captcha").toString();
-        if(!captcha.equals(right)){
+        if(!captcha.equalsIgnoreCase(right)){
             throw new FailedLoginException("验证码错误");
         }
 
         DriverManagerDataSource d=new DriverManagerDataSource();
         d.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        d.setUrl("jdbc:mysql://127.0.0.1:3307/jd-cx?useSSL=false&serverTimezone=Hongkong");
+        d.setUrl("jdbc:mysql://127.0.0.1:3306/jd-cx?useSSL=false&serverTimezone=Hongkong");
         d.setUsername("root");
         d.setPassword("root");
         JdbcTemplate template=new JdbcTemplate();
