@@ -1,0 +1,9 @@
+docker pull redis
+docker pull zookeeper
+#启动
+docker run -p 6379:6379 --name my-redis -d redis
+#连接
+docker exec -it my-docker /bin/bash
+
+#连接
+docker exec -it my-redis /bin/bash
